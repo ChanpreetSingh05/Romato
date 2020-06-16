@@ -1,0 +1,97 @@
+<!-- <div class="container-fluid">
+  <h2>Creating an Employee</h2>
+   -->
+   <div class="container py-2 px-4">
+    <h1 class="text-warning text-right"> Add New Meal </h1>
+    <hr>
+    <h2 class="text-warning text-right"> Breakfast </h2>
+    <div class="container">
+      <mat-card>
+        <!--<mat-spinner *ngIf="isLoading"></mat-spinner> -->
+        <form #menuForm="ngForm" (submit)="onSubmit(menuForm)" >
+          <!-- <img class="img-fluid" src="{{ emp?.imagePath }}" alt=" {{ emp?.name }} "> -->
+          <mat-form-field>
+            <input matInput [ngModel]="menu?.name" type="text" name="name" #name="ngModel" required placeholder="Enter Dish Name" ngModel>
+            <mat-error *ngIf="name.invalid && name.touched">Please enter a valid Name.</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput [ngModel]="menu?.cost" type="number" name="cost" #cost="ngModel" required placeholder="Enter the Cost" ngModel>
+            <mat-error *ngIf="cost.invalid && cost.touched">Please enter a valid cost.</mat-error>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Select an option</mat-label>
+            <mat-select [ngModel]="menu?.type" name="meal" #meal="ngModel" required ngModel>
+              <mat-option value="Breakfast">Breakfast</mat-option>
+              <mat-option value="Lunch">Lunch</mat-option>
+              <mat-option value="Dinner">Dinner</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <button mat-raised-button color="accent" type="submit">Submit</button>
+        </form>
+      </mat-card>
+
+    </div>
+
+
+
+
+
+<!-- <form #userForm="ngForm" *ngIf="!submitted" (ngSubmit)="onSubmit()" novalidate>
+
+    <div class="form-group">
+      <label>Name</label>
+      <input type="text" #name="ngModel" required class="form-control" [class.is-invalid]="name.invalid && name.touched" name="name" [(ngModel)]="userModel.name">
+      <small class="text-danger" [class.d-none]="name.valid || name.untouched">Name is required</small>
+    </div>
+
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" class="form-control" name="email" [(ngModel)]="userModel.email">
+    </div>
+
+    <div class="form-group">
+      <label>Phone</label>
+      <input type="tel" #phone="ngModel" required pattern="^\d{10}$" class="form-control" [class.is-invalid]="phone.invalid && phone.touched" name="phone" [(ngModel)]="userModel.phone">
+      <small class="text-danger" [class.d-none]="phone.valid || phone.untouched">Phone number must be 10 digits</small>
+      <div *ngIf="phone.errors && (phone.invalid || phone.touched)">
+        <small class="text-danger" *ngIf="phone.errors.required">Phone number is required</small>
+        <small class="text-danger" *ngIf="phone.errors.pattern">Phone number must be 10 digits</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <select class="custom-select" (blur)="validateTopic(topic.value)" (change)="validateTopic(topic.value)" #topic="ngModel" [class.is-invalid]="topicHasError && topic.touched" name="topic" [(ngModel)]="userModel.topic">
+        <option value="default">I am interested in</option>
+        <option *ngFor="let topic of topics">{{ topic }}</option>
+      </select>
+      <small class="text-danger" [class.d-none]="!topicHasError || topic.untouched">Please choose a topic</small>
+    </div>
+
+    <div class="mb-3">
+      <label>Time preference</label>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="timePreference" value="morning" [(ngModel)]="userModel.timePreference">
+        <label class="form-check-label">Morning (9AM - 12PM)</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="timePreference" value="evening" [(ngModel)]="userModel.timePreference">
+        <label class="form-check-label">Evening (5PM - 8PM)</label>
+      </div>
+    </div>
+
+    <div class="form-check mb-3">
+      <input class="form-check-input" type="checkbox" name="subscribe" [(ngModel)]="userModel.subscribe">
+      <label class="form-check-label">
+        Send me promotional offers
+      </label>
+    </div>
+
+    <button class="btn btn-primary" [disabled]="userForm.form.invalid || topicHasError" type="submit">Submit form</button>
+
+  </form>
+  <div class="alert alert-danger" *ngIf="errorMsg">
+    {{errorMsg}}
+  </div>
+</div> -->

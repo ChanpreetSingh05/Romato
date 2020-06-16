@@ -1,0 +1,38 @@
+<div *ngIf="userIsAuthenticated">
+  <div *ngIf="menus.length > 0 && !isLoading">
+
+    <div class="poster" *ngFor="let menu of menus">
+      <div class="card-heading">
+        <mat-tab-group>
+          <mat-tab label="BreakFast">
+            <div class="card" *ngFor="let breakfast of menu.breakfast">
+              <mat-card>
+                <p class="dull">{{ breakfast.name }}</p>
+                <p class="dull1">{{ breakfast.cost }}</p>
+                <button mat-raised-button (click)='addCart(breakfast._id, breakfast.name, breakfast.cost, menu.restname )'>Add To
+                  cart</button>
+              </mat-card>
+            </div>
+          </mat-tab>
+          <mat-tab label="Lunch">
+            <div class="card" *ngFor="let breakfast of menu.lunch">
+              <p class="dull">{{ breakfast.name }}</p>
+              <p class="dull1">{{ breakfast.cost }}</p>
+            </div>
+
+          </mat-tab>
+          <mat-tab label="Dinner">
+            <div class="card" *ngFor="let breakfast of menu.dinner">
+              <p class="dull">{{ breakfast.name }}</p>
+              <p class="dull1">{{ breakfast.cost }}</p>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="!userIsAuthenticated">
+  <button mat-raised-button routerLink="/login">Login Fist</button>
+</div>

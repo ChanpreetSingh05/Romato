@@ -1,0 +1,10 @@
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<div *ngIf="reviews.length > 0 && !isLoading">
+  <div class="poster" *ngFor="let review of reviews">
+    <div class="card-image">
+      <img [src]="review.imagePath" alt="Review Image" />
+    </div>
+  </div>
+</div>
+<mat-paginator [length]="totalPosts" [pageSize]="postsPerPage" [pageSizeOptions]="pageSizeOptions" (page)="onChangedPage($event)"
+  *ngIf="reviews.length > 0"></mat-paginator>

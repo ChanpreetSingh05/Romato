@@ -1,0 +1,50 @@
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<div *ngIf="restaurants.length > 0 && !isLoading" class="container-fluid mx-5 my-4">
+
+  <div class="poster" *ngFor="let restaurant of restaurants">
+    <mat-card class="w-50 mx-auto mb-4">
+      <div class="container-fluid row ">
+
+        <div class="col-lg-4 col-md-4 col-12">
+          <div class="card-image">
+            <img [src]="restaurant.imagePath" [alt]="restaurant.name" />
+          </div>
+        </div>
+
+        <div class="col-lg-8 col-md-8 col-12">
+          <div class="card-heading">
+            <p class="dull">{{ restaurant.cuisines.toUpperCase() }}</p>
+            <h1>{{ restaurant.name }}</h1>
+            <h2>{{ restaurant.city }}</h2>
+            <p class="dull">{{ restaurant.house_no }} {{ restaurant.st_name}}, {{restaurant.city}}
+              {{restaurant.postal_code}}</p>
+          </div>
+        </div>
+      </div>
+      <hr>
+
+      <div class="container-fluid row ">
+        <div class="col-lg-4 col-md-4 col-12">
+        <p class="dull2">CUISINES:</p>
+        <p class="dull2">AVG. COST:</p>
+        <p class="dull2">Contact No.:</p>
+      </div>
+
+      <div class="col-lg-4 col-md-4 col-12">
+        <p>{{ restaurant.cuisines }}</p>
+        <p>{{ restaurant.cost }}</p>
+        <p>{{ restaurant.contact }}</p>
+
+      </div>
+    </div>
+      <button mat-raised-button type="submit" *ngIf="!isLoading" [routerLink]="['/details', restaurant.id]">More
+        info..</button>
+    </mat-card>
+  </div>
+</div>
+
+<p *ngIf="restaurants.length <= 0 && !isLoading">No Movies added yet!</p>
+<!-- <mat-action-row>
+        <a mat-button color= "primary" [routerLink]="['/edit', restaurant.id]">EDIT</a>
+        <button mat-button color= "warn" (click)="onDelete(restaurant.id)">DELETE</button>
+      </mat-action-row> -->

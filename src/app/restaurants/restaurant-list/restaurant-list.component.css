@@ -1,0 +1,37 @@
+
+ .mat-raised-button{
+   height: 40px;
+   margin-left: auto;
+   margin-right: auto;
+   margin-top: 10px;
+   margin-bottom: 15px;
+   text-align: center;
+   width: 100%;
+   background-color: #cb202d;
+ }
+
+h1{
+  color: #cb202d;
+  font-style: bolder;
+  font-weight: bolder;
+  margin: 2px;
+  }
+ h2{
+   color: black;
+   margin: 2px;
+ }
+ .dull{
+   color: grey;
+   margin: 2px;
+ }
+ .dull2{
+  color: grey;
+}
+
+h3{
+  margin: 2px;
+  font-size: 160%;
+}
+img{
+  width: 130px;
+}

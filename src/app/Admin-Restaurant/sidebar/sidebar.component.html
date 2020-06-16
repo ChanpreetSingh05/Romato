@@ -1,0 +1,68 @@
+<mat-nav-list>
+  <h2 matSubheader>Menu</h2>
+
+  <!-- ForUsers -->
+  <a mat-list-item routerLinkActive="list-item-active" routerLink="./create"
+      *ngIf="userIsAuthenticated && userisrest">
+      <i class="fas fa-clock mx-3"></i>
+      Add Menu
+  </a>
+
+  <a mat-list-item routerLinkActive="list-item-active" routerLink="./menu"
+      *ngIf="userIsAuthenticated && userisrest">
+      <i class="fas fa-clock mx-3"></i>
+      Menu List
+  </a>
+
+  <h2 matSubheader>About</h2>
+
+  <!-- ForUsers -->
+  <a mat-list-item routerLinkActive="list-item-active" routerLink="./details"
+      *ngIf="userIsAuthenticated && userisrest">
+      <i class="fas fa-clock mx-3"></i>
+      About
+  </a>
+
+  <mat-divider></mat-divider>
+
+  <!-- <h2 matSubheader>Employees</h2>
+  <a mat-list-item routerLinkActive="list-item-active" routerLink="/details/{{ userId }}"
+      *ngIf="userIsAuthenticated && !userisAdmin">
+      <i class="far fa-address-book mx-3"></i>
+      Employee Information
+  </a>
+
+  <a mat-list-item routerLinkActive="list-item-active" routerLink="./create"
+      *ngIf="userIsAuthenticated && userisAdmin">
+      <i class="far fa-address-book mx-3"></i>
+      Add Employee
+  </a>
+  <a mat-list-item routerLinkActive="list-item-active" routerLink="./" *ngIf="userIsAuthenticated && userisAdmin">
+      <i class="fas fa-book mx-3"></i>
+      Employee List
+  </a>
+  <a mat-list-item routerLinkActive="list-item-active" routerLink="./employeedetails"
+      *ngIf="userIsAuthenticated && userisAdmin">
+      <i class="far fa-address-book mx-3"></i>
+      Employee Details
+  </a>
+
+  <mat-divider></mat-divider> -->
+<!--
+  <h2 matSubheader>Shifts</h2>
+  <a mat-list-item routerLinkActive="list-item-active" routerLink="/" *ngIf="userIsAuthenticated && !userisAdmin">
+      <i class="fas fa-calendar-check mx-3"></i>
+      Shifts
+  </a>
+  <a mat-list-item routerLinkActive="list-item-active" routerLink="./calendar"
+      *ngIf="userIsAuthenticated && userisAdmin">
+      <i class="fas fa-calendar mx-3"></i>
+      Assign Shifts
+  </a>
+  <a mat-list-item routerLinkActive="list-item-active" routerLink="./shifts"
+      *ngIf="userIsAuthenticated && userisAdmin">
+      <i class="fas fa-calendar-check mx-3"></i>
+      Shifts
+  </a> -->
+
+</mat-nav-list>

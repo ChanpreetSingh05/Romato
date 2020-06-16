@@ -1,0 +1,60 @@
+<div *ngIf="!userIsAuthenticated">
+  <button mat-raised-button routerLink="/login">Login Fist</button>
+</div>
+
+<div class="container" *ngIf="userIsAuthenticated">
+  <div class="coantainer" *ngFor="let item of items">
+    <h2 class="text-danger">Your Orders</h2>
+
+    <h2 class="text-danger">{{ item.restname }}</h2>
+
+    <mat-card>
+      <table class="table table-hover" *ngIf="items.length > 0">
+        <thead>
+          <tr>
+            <th>S No.</th>
+            <th>Item Name</th>
+            <th>Item Cost</th>
+            <th>Options</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of item.orders">
+            <!-- [routerLink]="['/employeedetails', employee?._id  || 'all' ]" -->
+            <td>
+              <i class="fas fa-chevron-circle-right"></i></td>
+
+            <td>{{ order?.name }}</td>
+            <td>{{ order?.cost }}</td>
+            <td><i class="fas fa-trash-alt mx-4" (click)="onDelete(order?._id)"></i></td>
+          </tr>
+        </tbody>
+      </table>
+    </mat-card>
+
+
+  <mat-card class="mt-4">
+    <form #userForm="ngForm" (submit)="onSubmit(userForm, item?.restid, item?.orders, item?.restname)" >
+      <!-- <img class="img-fluid" src="{{ emp?.imagePath }}" alt=" {{ emp?.name }} "> -->
+      <mat-form-field>
+        <input matInput type="text" name="name" #name="ngModel" required placeholder="Enter the Name" ngModel>
+        <mat-error *ngIf="name.invalid && name.touched">Please enter a valid Name.</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="tel" name="phone" #phone="ngModel" required pattern="^\d{10}$"
+          placeholder="Enter the Mobile No." ngModel>
+        <mat-error *ngIf="phone.errors && (phone.invalid || phone.touched)">
+          <mat-error *ngIf="phone.errors.required">Phone number is required</mat-error>
+          <mat-error *ngIf="phone.errors.pattern">Phone number must be 10 digits</mat-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="name" name="address" #address="ngModel" required placeholder="Enter the Address" ngModel>
+        <mat-error *ngIf="address.invalid && address.touched">Please enter valid Address.</mat-error>
+      </mat-form-field>
+      <button mat-raised-button color="accent" type="submit">Submit</button>
+      </form>
+  </mat-card>
+</div>
+</div>
+<p *ngIf="items.length <= 0"> Empty Cart </p>

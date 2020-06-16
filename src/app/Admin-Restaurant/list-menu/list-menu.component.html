@@ -1,0 +1,97 @@
+<div class="container"  id="fullheight">
+  <!-- <input type="text" [(ngModel)]="title" (input)="Search()"> -->
+  <table class="table table-hover" *ngIf="menus.length > 0 && !isLoading">
+    <h2>BreakFast</h2>
+    <div *ngFor="let menu of menus">
+    <thead>
+      <tr>
+        <th>Meal Name</th>
+        <th>Meal Cost</th>
+        <th>Options</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let breakfast of menu.breakfast">
+        <td>{{ breakfast?.name }}</td>
+        <td>{{ breakfast?.cost }}</td>
+        <td><i class="fas fa-pen mx-1" [routerLink]="['../create', 'breakfast' ,breakfast?._id  || 'all' ]"></i>
+          <i class="fas fa-trash-alt mx-4" (click)="onDelete(breakfast?._id,'breakfast')"></i></td>
+      </tr>
+    </tbody>
+
+    <h2>Lunch</h2>
+    <thead>
+      <tr>
+        <th>Meal Name</th>
+        <th>Meal Cost</th>
+        <th>Options</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let lunch of menu.lunch">
+        <td>{{ lunch?.name }}</td>
+        <td>{{ lunch?.cost }}</td>
+        <td><i class="fas fa-pen mx-1" [routerLink]="['../create', 'lunch' , lunch?._id  || 'all' ]" ></i>
+          <i class="fas fa-trash-alt mx-4" ></i></td>
+      </tr>
+    </tbody>
+    <h2>Dinner</h2>
+    <thead>
+      <tr>
+        <th>Meal Name</th>
+        <th>Meal Cost</th>
+        <th>Options</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let dinner of menu.dinner">
+        <td>{{ dinner?.name }}</td>
+        <td>{{ dinner?.cost }}</td>
+        <td><i class="fas fa-pen mx-1" [routerLink]="['../create', 'dinner' , dinner?._id  || 'all' ]"></i>
+          <i class="fas fa-trash-alt mx-4" ></i></td>
+      </tr>
+    </tbody>
+  </div>
+  </table>
+</div>
+
+<p *ngIf="menus.length <= 0 && !isLoading">No Menu added yet!</p>
+
+<!-- <div *ngIf="userIsAuthenticated">
+  <div *ngIf="menus.length > 0 && !isLoading">
+
+    <div class="poster" *ngFor="let menu of menus">
+      <div class="card-heading">
+        <mat-tab-group>
+          <mat-tab label="BreakFast">
+            <div class="card" *ngFor="let breakfast of menu.breakfast">
+              <mat-card>
+                <p class="dull">{{ breakfast.name }}</p>
+                <p class="dull1">{{ breakfast.cost }}</p>
+                <button mat-raised-button (click)='addCart(breakfast._id, breakfast.name, breakfast.cost )'>Add To
+                  cart</button>
+              </mat-card>
+            </div>
+          </mat-tab>
+          <mat-tab label="Lunch">
+            <div class="card" *ngFor="let breakfast of menu.lunch">
+              <p class="dull">{{ breakfast.name }}</p>
+              <p class="dull1">{{ breakfast.cost }}</p>
+            </div>
+
+          </mat-tab>
+          <mat-tab label="Dinner">
+            <div class="card" *ngFor="let breakfast of menu.dinner">
+              <p class="dull">{{ breakfast.name }}</p>
+              <p class="dull1">{{ breakfast.cost }}</p>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="!userIsAuthenticated">
+  <button mat-raised-button routerLink="/login">Login Fist</button>
+</div> -->

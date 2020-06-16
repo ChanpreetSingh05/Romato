@@ -1,0 +1,44 @@
+<div *ngIf="!userisAdmin">
+  <button mat-raised-button routerLink="/login">Login Fist</button>
+</div>
+
+<div class="container" *ngIf="userIsAuthenticated && userisAdmin">
+  <h2 class="text-danger">Orders</h2>
+  <div class="coantainer" *ngFor="let item of orders">
+
+
+    <mat-card class="mb-4">
+      <h3 class="text-danger"> {{ item?.restname }} </h3>
+      <div class="container" *ngFor="let info of item?.info">
+        <p> Customer Name : {{ info?.name }}</p>
+        <p>Customer Address : {{ info?.address }}</p>
+        <p>Customer Contact : {{ info?.phone }}</p>
+        <p class="text-danger">Status: {{ item?.status }}</p>
+      </div>
+
+      <table class="table table-hover" *ngIf="orders.length > 0">
+        <thead>
+          <tr>
+            <th>S. No.</th>
+            <th>Item Name</th>
+            <th>Item Cost</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of item.orders">
+            <!-- [routerLink]="['/employeedetails', employee?._id  || 'all' ]" -->
+            <td><i class="fas fa-chevron-circle-right"></i></td>
+            <td>{{ order?.name }}</td>
+            <td>{{ order?.cost }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <mat-action-row *ngIf="userIsAuthenticated && userisAdmin">
+        <a mat-button color="primary" (click)="onAccept(item.id)">Accept</a>
+        <button mat-button color="warn" (click)="onDelete(item.id)">Reject</button>
+      </mat-action-row>
+    </mat-card>
+
+  </div>
+</div>
+<p *ngIf="orders.length <= 0"> No Pending Orders </p>
