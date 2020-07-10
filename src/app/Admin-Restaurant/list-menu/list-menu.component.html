@@ -1,97 +1,86 @@
-<div class="container"  id="fullheight">
-  <!-- <input type="text" [(ngModel)]="title" (input)="Search()"> -->
-  <table class="table table-hover" *ngIf="menus.length > 0 && !isLoading">
-    <h2>BreakFast</h2>
-    <div *ngFor="let menu of menus">
-    <thead>
-      <tr>
-        <th>Meal Name</th>
-        <th>Meal Cost</th>
-        <th>Options</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let breakfast of menu.breakfast">
-        <td>{{ breakfast?.name }}</td>
-        <td>{{ breakfast?.cost }}</td>
-        <td><i class="fas fa-pen mx-1" [routerLink]="['../create', 'breakfast' ,breakfast?._id  || 'all' ]"></i>
-          <i class="fas fa-trash-alt mx-4" (click)="onDelete(breakfast?._id,'breakfast')"></i></td>
-      </tr>
-    </tbody>
-
-    <h2>Lunch</h2>
-    <thead>
-      <tr>
-        <th>Meal Name</th>
-        <th>Meal Cost</th>
-        <th>Options</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let lunch of menu.lunch">
-        <td>{{ lunch?.name }}</td>
-        <td>{{ lunch?.cost }}</td>
-        <td><i class="fas fa-pen mx-1" [routerLink]="['../create', 'lunch' , lunch?._id  || 'all' ]" ></i>
-          <i class="fas fa-trash-alt mx-4" ></i></td>
-      </tr>
-    </tbody>
-    <h2>Dinner</h2>
-    <thead>
-      <tr>
-        <th>Meal Name</th>
-        <th>Meal Cost</th>
-        <th>Options</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let dinner of menu.dinner">
-        <td>{{ dinner?.name }}</td>
-        <td>{{ dinner?.cost }}</td>
-        <td><i class="fas fa-pen mx-1" [routerLink]="['../create', 'dinner' , dinner?._id  || 'all' ]"></i>
-          <i class="fas fa-trash-alt mx-4" ></i></td>
-      </tr>
-    </tbody>
-  </div>
-  </table>
-</div>
-
-<p *ngIf="menus.length <= 0 && !isLoading">No Menu added yet!</p>
-
-<!-- <div *ngIf="userIsAuthenticated">
-  <div *ngIf="menus.length > 0 && !isLoading">
-
-    <div class="poster" *ngFor="let menu of menus">
-      <div class="card-heading">
-        <mat-tab-group>
-          <mat-tab label="BreakFast">
-            <div class="card" *ngFor="let breakfast of menu.breakfast">
-              <mat-card>
-                <p class="dull">{{ breakfast.name }}</p>
-                <p class="dull1">{{ breakfast.cost }}</p>
-                <button mat-raised-button (click)='addCart(breakfast._id, breakfast.name, breakfast.cost )'>Add To
-                  cart</button>
-              </mat-card>
-            </div>
-          </mat-tab>
-          <mat-tab label="Lunch">
-            <div class="card" *ngFor="let breakfast of menu.lunch">
-              <p class="dull">{{ breakfast.name }}</p>
-              <p class="dull1">{{ breakfast.cost }}</p>
+<div class="container py-5">
+  <div class="row">
+    <div class="col-lg-10 mx-auto col-12 text-center mb-3">
+      <h1 class="mt-0 text-primary">Your Menu</h1>
+      <!-- <p class="lead">Begin with a selection from our award winning beverage menu or choose a wine from our extensive wine list. Our wine list features over 100 different vintages and has received the chamber of commerce award of excellence.</p> -->
+    </div>
+    <div class="container" *ngIf="menus.length > 0 && !isLoading">
+      <div *ngFor="let menu of menus">
+        <div class="col-12 mt-4">
+          <h3 class="text-center">Starters</h3>
+          <hr class="accent my-5">
+        </div>
+        <div class="card-columns">
+          <div class="card card-body" *ngFor="let breakfast of menu.breakfast">
+            <div class="row">
+              <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                <img [src]="breakfast?.imagepath" [alt]="breakfast?.name" class="rounded-circle w-100">
+              </div>
+              <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                <span class="float-right font-weight-bold">$ {{ breakfast?.cost }}</span>
+                <h6 class="text-truncate">{{ breakfast?.name }}</h6>
+                <p class="small">Tito's Vodka and White Créme de Cacao dusted with hand shaved chocolate.</p>
+                <td class="text-right"><i class="fas fa-pen mx-1"
+                    [routerLink]="['../create', 'breakfast' ,breakfast?._id  || 'all' ]"></i>
+                  <i class="fas fa-trash-alt mx-4" (click)="onDelete(breakfast?._id,'breakfast')"></i></td>
+              </div>
             </div>
 
-          </mat-tab>
-          <mat-tab label="Dinner">
-            <div class="card" *ngFor="let breakfast of menu.dinner">
-              <p class="dull">{{ breakfast.name }}</p>
-              <p class="dull1">{{ breakfast.cost }}</p>
+
+          </div>
+        </div>
+
+
+        <div class="col-12 mt-4">
+          <h3 class="text-center">Soup</h3>
+          <hr class="accent my-5">
+        </div>
+        <div class="card-columns">
+          <div class="card card-body" *ngFor="let lunch of menu.lunch">
+            <div class="row">
+              <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                <img [src]="lunch?.imagepath" [alt]="lunch?.name" class="rounded-circle w-100">
+              </div>
+              <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                <span class="float-right font-weight-bold">$ {{ lunch?.cost }}</span>
+                <h6 class="text-truncate">{{ lunch?.name }}</h6>
+                <p class="small">Sustainably raised Argentine red shrimp, fried golden brown and served with chipotle
+                  mayonnaise
+                  for dipping.</p>
+                <td><i class="fas fa-pen mx-1" [routerLink]="['../create', 'lunch' , lunch?._id  || 'all' ]"></i>
+                  <i class="fas fa-trash-alt mx-4" (click)="onDelete(lunch?._id,'lunch')"></i></td>
+              </div>
             </div>
-          </mat-tab>
-        </mat-tab-group>
+          </div>
+        </div>
+
+        <div class="col-12 mt-4">
+          <h3 class="text-center">Main Course</h3>
+          <hr class="accent my-5">
+        </div>
+        <div class="card-columns">
+          <div class="card card-body" *ngFor="let dinner of menu.dinner">
+            <div class="row">
+              <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                <img [src]="dinner?.imagepath" [alt]="dinner?.name" class="rounded-circle w-100">
+              </div>
+              <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                <span class="float-right font-weight-bold">$ {{ dinner?.cost }}</span>
+                <h6 class="text-underline">{{ dinner?.name }}</h6>
+                <p class="small">New Orleans style hot sliced Cajun chicken breast with mixed greens, tomatoes,
+                  cucumbers
+                  and
+                  hard-cooked eggs with warm, spicy honey mustard dressing topped with crumbled bacon..</p>
+                <td><i class="fas fa-pen mx-1" [routerLink]="['../create', 'dinner' , dinner?._id  || 'all' ]"></i>
+                  <i class="fas fa-trash-alt mx-4" (click)="onDelete(dinner?._id,'dinner')"></i></td>
+              </div>
+            </div>
+          </div>
+        </div>
 
       </div>
     </div>
+
+    <p *ngIf="menus.length <= 0 && !isLoading">No Menu added yet!</p>
   </div>
 </div>
-<div *ngIf="!userIsAuthenticated">
-  <button mat-raised-button routerLink="/login">Login Fist</button>
-</div> -->

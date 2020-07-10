@@ -20,11 +20,15 @@ export class MenuService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  postMenu(name: string, cost: string, meal: string) {
+  postMenu(name: string, cost: string, meal: string, image: File) {
+    const Data = new FormData();
+    Data.append('name', name);
+    Data.append('image', image, 'image');
+    Data.append('cost', cost);
 
     if (meal === 'Breakfast') {
       // 5ed6e8e672ae430bf4e55230
-      const Data = { name, cost , restid: '5ed6e8e672ae430bf4e55230'};
+      // const Data = { name, cost , restid: '5ed6e8e672ae430bf4e55230'};
       this.http
         .post('http://localhost:3000/api/menu/brkfast', Data)
         .subscribe(response => {
@@ -32,7 +36,6 @@ export class MenuService {
         });
     } else if (meal === 'Lunch') {
       // 5ed6e8e672ae430bf4e55230
-      const Data = { name, cost , restid: '5ed6e8e672ae430bf4e55230'};
       this.http
         .post('http://localhost:3000/api/menu/lunch', Data)
         .subscribe(response => {
@@ -40,7 +43,6 @@ export class MenuService {
         });
     } else if (meal === 'Dinner') {
       // 5ed6e8e672ae430bf4e55230
-      const Data = { name, cost , restid: '5ed6e8e672ae430bf4e55230' };
       this.http
         .post('http://localhost:3000/api/menu/dinner', Data)
         .subscribe(response => {
@@ -49,12 +51,23 @@ export class MenuService {
     }
   }
 
-  updateMenu(id: string, name: string, cost: string, meal: string) {
-    const Data: any = {
-      id,
-      name,
-      cost
-    };
+  updateMenu(id: string, name: string, cost: string, meal: string, image: File | string) {
+    let Data: any | FormData;
+    if (typeof image === 'object') {
+      Data = new FormData();
+      Data.append('id', id);
+      Data.append('name', name);
+      Data.append('image', image, 'image');
+      Data.append('cost', cost);
+    } else {
+      Data = {
+        id,
+        name,
+        cost,
+        imagePath: image
+      };
+    }
+
     if (meal === 'Breakfast') {
       this.http
         .put('http://localhost:3000/api/menu/brkfastupdate', Data)
@@ -79,19 +92,28 @@ export class MenuService {
   getEditableMenu(id: string, type: string) {
     // return [...this.posts];
     if (type === 'breakfast') {
-      return this.http.get<{ _id: string;
+      return this.http.get<{
+        _id: string;
         name: string;
-        cost: string; }>
+        cost: string;
+        imagePath: string;
+      }>
         ('http://localhost:3000/api/menu/breakfastdetails/' + id);
     } else if (type === 'lunch') {
-      return this.http.get<{ _id: string;
+      return this.http.get<{
+        _id: string;
         name: string;
-        cost: string; }>
+        cost: string;
+        imagePath: string;
+      }>
         ('http://localhost:3000/api/menu/lunchdetails/' + id);
     } else if (type === 'dinner') {
-      return this.http.get<{ _id: string;
+      return this.http.get<{
+        _id: string;
         name: string;
-        cost: string; }>
+        cost: string;
+        imagePath: string;
+      }>
         ('http://localhost:3000/api/menu/dinnerdetails/' + id);
     }
   }

@@ -1,5 +1,5 @@
 const express = require("express");
-
+const multer = require("multer");
 const router = express.Router();
 
 const RestaurantMenuModel = require("../models/RestaurantMenu");
@@ -7,29 +7,57 @@ const checkAuth = require("../middleware/check-auth");
 
 // Initializing model
 
-router.post("" , (req,res, next) =>{
-  const RestaurantMenuMode = new RestaurantMenuModel({
-restid:"5ed6e8e672ae430bf4e55230",
-restname:"The Early Bird"
-    });
-    RestaurantMenuMode.save()
-      .then((result) => {
-        res.status(201).json({
-          message: "Restaurant Menu created!",
-          result: result,
-        });
-      })
-      .catch((err) => {
-        res.status(500).json({
-          error: err,
-        });
-      });
+const MIME_TYPE_MAP = {
+  "image/png": "png",
+  "image/jpeg": "jpg",
+  "image/jpg": "jpg",
+};
 
-})
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const isValid = MIME_TYPE_MAP[file.mimetype];
+    let error = new Error("Invalid mime type");
+    if (isValid) {
+      error = null;
+    }
+    cb(error, "backend/Data/Menu_Photo");
+  },
+  filename: (req, file, cb) => {
+    const name = file.originalname.toLowerCase().split(" ").join("-");
+    const ext = MIME_TYPE_MAP[file.mimetype];
+    cb(null, name + "-" + Date.now() + "." + ext);
+  },
+});
+
+router.post("", (req, res, next) => {
+  const RestaurantMenuMode = new RestaurantMenuModel({
+    restid: "5ed6e8e672ae430bf4e55230",
+    restname: "The Early Bird",
+  });
+  RestaurantMenuMode.save()
+    .then((result) => {
+      res.status(201).json({
+        message: "Restaurant Menu created!",
+        result: result,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: err,
+      });
+    });
+});
 
 // Adding Items
-router.post("/dinner", checkAuth, (req, res, next) => {
-  // console.log(req.userData)
+router.post("/dinner", checkAuth,
+multer({ storage: storage }).single("image"),
+(req, res, next) => {
+  let imagePath = '';
+  if (req.file) {
+    const url = req.protocol + "://" + req.get("host");
+    imagePath = url + "/Data/Menu_Photo/" + req.file.filename;
+  }
+  console.log('edr '+ imagePath);
   RestaurantMenuModel.updateOne(
     { restid: req.userData.restId },
     {
@@ -37,6 +65,7 @@ router.post("/dinner", checkAuth, (req, res, next) => {
         dinner: {
           name: req.body.name,
           cost: req.body.cost,
+          imagepath: imagePath,
         },
       },
     }
@@ -49,8 +78,14 @@ router.post("/dinner", checkAuth, (req, res, next) => {
   });
 });
 
-router.post("/lunch", checkAuth, (req, res, next) => {
-  // console.log(req.body.name);
+router.post("/lunch", checkAuth,
+multer({ storage: storage }).single("image"),
+(req, res, next) => {
+  let imagePath = '';
+  if (req.file) {
+    const url = req.protocol + "://" + req.get("host");
+    imagePath = url + "/Data/Menu_Photo/" + req.file.filename;
+  }
   RestaurantMenuModel.updateOne(
     { restid: req.userData.restId },
     {
@@ -58,6 +93,7 @@ router.post("/lunch", checkAuth, (req, res, next) => {
         lunch: {
           name: req.body.name,
           cost: req.body.cost,
+          imagepath : imagePath,
         },
       },
     }
@@ -70,82 +106,62 @@ router.post("/lunch", checkAuth, (req, res, next) => {
   });
 });
 
-router.post("/brkfast", checkAuth, (req, res, next) => {
-  // const RestaurantMenuMode = new Model({
-  //   name: req.body.name,
-  //   cost: req.body.cost,
-  // });
-  console.log(req.body.name);
-  RestaurantMenuModel.updateOne(
-    { restid: req.userData.restId },
-    {
-      $push: {
-        breakfast: {
-          name: req.body.name,
-          cost: req.body.cost,
+router.post(
+  "/brkfast",
+  checkAuth,
+  multer({ storage: storage }).single("image"),
+  (req, res, next) => {
+    let imagePath = '';
+    if (req.file) {
+      const url = req.protocol + "://" + req.get("host");
+      imagePath = url + "/Data/Menu_Photo/" + req.file.filename;
+    }
+    RestaurantMenuModel.updateOne(
+      { restid: req.userData.restId },
+      {
+        $push: {
+          breakfast: {
+            name: req.body.name,
+            cost: req.body.cost,
+            imagepath: imagePath,
+          },
         },
-      },
-    }
-  ).then((result) => {
-    if (result.nModified > 0) {
-      res.status(200).json({ message: "Update successful!" });
-    } else {
-      res.status(401).json({ message: "not" });
-    }
-  });
-});
+      }
+    ).then((result) => {
+      if (result.nModified > 0) {
+        res.status(200).json({ message: "Update successful!" });
+      } else {
+        res.status(401).json({ message: "not" });
+      }
+    });
+  }
+);
 
 // Edit Items
 
-// router.get("/dinnerupdate", (req, res, next) => {
-//   // console.log(req.body);
-//   RestaurantMenuModel.findOne(
-//     {
-//       restid: "5ed6e8e672ae430bf4e55230",
-//       // 5ed8a16e3f88b92d08b2e8c5
-//       "dinner._id": "5edafbe6fb358c2c682dbe2d"
-//       // dinner: {
-//       //   _id: "5edafbe6fb358c2c682dbe2d",
-//       // }
-//     // },
-//     // {
-//     //   dinner: {
-//     //     name: req.body.name,
-//     //     cost: req.body.cost,
-//     //   }
-//     },{ "dinner.$": 1 }
-//   ).then((result) => {
-//     // var dinner= result.dinner;
-//     // result.dinner.findOne({_id: "5edafbe6fb358c2c682dbe2d"})
-//     // .exec()
-//     // .then(res =>{
-//     //
-//     //   res.status(200).json(res)
-//     // });
-//         res.status(200).json(result);
-//     // if (result.nModified > 0) {
-//     //   res.status(200).json({ message: "Update successful!" });
-//     // } else {
-//     //   res.status(401).json({ message: "not" });
-//     // }
-//   });
-// });
+router.put("/dinnerupdate", checkAuth,
+multer({ storage: storage }).single("image"),
+(req, res, next) => {
+  let imagePath = req.body.imagePath;
+  if (req.file) {
+    const url = req.protocol + "://" + req.get("host");
+    imagePath = url + "/Data/Menu_Photo/" + req.file.filename;
+  }
 
-router.put("/dinnerupdate", checkAuth, (req, res, next) => {
   RestaurantMenuModel.updateOne(
     {
       restid: req.userData.restId,
-      "dinner._id": req.body.id
+      "dinner._id": req.body.id,
     },
     {
-      $set:{
-        "dinner.$":
-        {
+      $set: {
+        "dinner.$": {
           name: req.body.name,
-          cost: req.body.cost
-        }
+          cost: req.body.cost,
+          imagepath: imagePath,
+        },
+      },
     }
-  }
   ).then((result) => {
     if (result.nModified > 0) {
       res.status(200).json({ message: "Update successful!" });
@@ -155,22 +171,28 @@ router.put("/dinnerupdate", checkAuth, (req, res, next) => {
   });
 });
 
-router.put("/lunchupdate", checkAuth, (req, res, next) => {
-  // console.log(req.body.name);
+router.put("/lunchupdate", checkAuth,
+multer({ storage: storage }).single("image"),
+(req, res, next) => {
+  let imagePath = req.body.imagePath;
+  if (req.file) {
+    const url = req.protocol + "://" + req.get("host");
+    imagePath = url + "/Data/Menu_Photo/" + req.file.filename;
+  }
   RestaurantMenuModel.updateOne(
     {
       restid: req.userData.restId,
-      "lunch._id": req.body.id
+      "lunch._id": req.body.id,
     },
     {
-      $set:{
-        "lunch.$":
-        {
+      $set: {
+        "lunch.$": {
           name: req.body.name,
-          cost: req.body.cost
-        }
+          cost: req.body.cost,
+          imagepath: imagePath,
+        },
+      },
     }
-  }
   ).then((result) => {
     if (result.nModified > 0) {
       res.status(200).json({ message: "Update successful!" });
@@ -180,21 +202,32 @@ router.put("/lunchupdate", checkAuth, (req, res, next) => {
   });
 });
 
-router.put("/brkfastupdate", checkAuth, (req, res, next) => {
+router.put("/brkfastupdate", checkAuth,
+multer({ storage: storage }).single("image"),
+(req, res, next) => {
+  let imagePath = '';
+  if (req.file) {
+    const url = req.protocol + "://" + req.get("host");
+    imagePath = url + "/Data/Menu_Photo/" + req.file.filename;
+  }else{
+    imagePath = req.body.imagePath;
+  }
+
+  console.log('edr' + req.body.id);
   RestaurantMenuModel.updateOne(
     {
       restid: req.userData.restId,
-      "breakfast._id": req.body.id
+      "breakfast._id": req.body.id,
     },
     {
-      $set:{
-        "breakfast.$":
-        {
+      $set: {
+        "breakfast.$": {
           name: req.body.name,
-          cost: req.body.cost
-        }
+          cost: req.body.cost,
+          imagepath: imagePath,
+        },
+      },
     }
-  }
   ).then((result) => {
     if (result.nModified > 0) {
       res.status(200).json({ message: "Update successful!" });
@@ -216,12 +249,12 @@ router.get("", checkAuth, (req, res, next) => {
 //For Particular data Fetching
 router.get("/breakfastdetails/:id", checkAuth, (req, res, next) => {
   RestaurantMenuModel.findOne(
-        {
-          restid: req.userData.restId,
-          "breakfast._id": req.params.id
-        },
-        { "breakfast.$": 1 }
-      ).then((restaurant) => {
+    {
+      restid: req.userData.restId,
+      "breakfast._id": req.params.id,
+    },
+    { "breakfast.$": 1 }
+  ).then((restaurant) => {
     if (restaurant) {
       console.log(restaurant);
       res.status(200).json(restaurant.breakfast[0]);
@@ -233,12 +266,12 @@ router.get("/breakfastdetails/:id", checkAuth, (req, res, next) => {
 
 router.get("/lunchdetails/:id", checkAuth, (req, res, next) => {
   RestaurantMenuModel.findOne(
-        {
-          restid: req.userData.restId,
-          "lunch._id": req.params.id
-        },
-        { "lunch.$": 1 }
-      ).then((restaurant) => {
+    {
+      restid: req.userData.restId,
+      "lunch._id": req.params.id,
+    },
+    { "lunch.$": 1 }
+  ).then((restaurant) => {
     if (restaurant) {
       res.status(200).json(restaurant.lunch[0]);
     } else {
@@ -249,12 +282,12 @@ router.get("/lunchdetails/:id", checkAuth, (req, res, next) => {
 
 router.get("/dinnerdetails/:id", checkAuth, (req, res, next) => {
   RestaurantMenuModel.findOne(
-        {
-          restid: req.userData.restId,
-          "dinner._id": req.params.id
-        },
-        { "dinner.$": 1 }
-      ).then((restaurant) => {
+    {
+      restid: req.userData.restId,
+      "dinner._id": req.params.id,
+    },
+    { "dinner.$": 1 }
+  ).then((restaurant) => {
     if (restaurant) {
       res.status(200).json(restaurant.dinner[0]);
     } else {
@@ -263,55 +296,54 @@ router.get("/dinnerdetails/:id", checkAuth, (req, res, next) => {
   });
 });
 
-
 // Deleting items
 
 router.put("/brkfastdelete", checkAuth, (req, res, next) => {
   RestaurantMenuModel.updateOne(
     {
       restid: req.userData.restId,
-      "breakfast._id": req.body.id
+      "breakfast._id": req.body.id,
     },
-    { $pull: { "breakfast" : { _id: req.body.id } } }
-    ).then((result) => {
-      if (result.nModified > 0) {
-        res.status(200).json({ message: "Post Deleted!" });
-      } else {
-        res.status(401).json({ message: "not" });
-      }
-    });
+    { $pull: { breakfast: { _id: req.body.id } } }
+  ).then((result) => {
+    if (result.nModified > 0) {
+      res.status(200).json({ message: "Post Deleted!" });
+    } else {
+      res.status(401).json({ message: "not" });
+    }
+  });
 });
 
 router.put("/lunchdelete", checkAuth, (req, res, next) => {
   RestaurantMenuModel.updateOne(
     {
       restid: req.userData.restId,
-      "lunch._id": req.body.id
+      "lunch._id": req.body.id,
     },
-    { $pull: { "lunch" : { _id: req.body.id } } }
-    ).then((result) => {
-      if (result.nModified > 0) {
-        res.status(200).json({ message: "Post Deleted!" });
-      } else {
-        res.status(401).json({ message: "not" });
-      }
-    });
+    { $pull: { lunch: { _id: req.body.id } } }
+  ).then((result) => {
+    if (result.nModified > 0) {
+      res.status(200).json({ message: "Post Deleted!" });
+    } else {
+      res.status(401).json({ message: "not" });
+    }
+  });
 });
 
 router.put("/dinnerdelete", checkAuth, (req, res, next) => {
   RestaurantMenuModel.updateOne(
     {
       restid: req.userData.restId,
-      "dinner._id": req.body.id
+      "dinner._id": req.body.id,
     },
-    { $pull: { "dinner" : { _id: req.body.id } } }
-    ).then((result) => {
-      if (result.nModified > 0) {
-        res.status(200).json({ message: "Post Deleted!" });
-      } else {
-        res.status(401).json({ message: "not" });
-      }
-    });
+    { $pull: { dinner: { _id: req.body.id } } }
+  ).then((result) => {
+    if (result.nModified > 0) {
+      res.status(200).json({ message: "Post Deleted!" });
+    } else {
+      res.status(401).json({ message: "not" });
+    }
+  });
 });
 
 module.exports = router;

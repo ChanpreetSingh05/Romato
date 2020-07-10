@@ -65,29 +65,19 @@
 
         </div>
       </mat-tab>
-      <mat-tab label="Photos">
-        <!-- <app-review-photos></app-review-photos> -->
+      <!-- <mat-tab label="Photos">
+        <app-review-photos></app-review-photos>
       </mat-tab>
       <mat-tab label="Reviews">
-        <!-- <app-review-create></app-review-create> -->
-        <!-- <app-review-list></app-review-list> -->
-      </mat-tab>
+        <app-review-create></app-review-create>
+        <app-review-list></app-review-list>
+      </mat-tab> -->
     </mat-tab-group>
 
-    <div class="post" *ngIf="edited==true" >
+    <!-- <div class="post" *ngIf="edited==true" >
      <router-outlet></router-outlet>
-    </div>
+    </div> -->
   </mat-card>
-</div>
-
-<div class="post1">
-  <div class="poster">
-    <mat-card>
-      <h2>Reviews</h2>
-      <hr>
-      <router-outlet></router-outlet>
-    </mat-card>
-  </div>
 </div>
 
 
@@ -100,5 +90,24 @@
     </mat-card>
   </div>
 </div>
+
+<div class="post1">
+  <div class="poster">
+
+    <mat-card>
+      <h2>Add Review</h2>
+      <hr>
+      <app-review-create></app-review-create>
+    </mat-card>
+
+    <mat-card class="mt-4">
+      <h2>Reviews</h2>
+      <hr>
+      <router-outlet></router-outlet>
+    </mat-card>
+  </div>
+</div>
+
+
 
 <!-- <p *ngIf="restaurants.length <= 0 && !isLoading">No Movies added yet!</p> -->

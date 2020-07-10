@@ -1,4 +1,13 @@
 <mat-nav-list>
+  <h2 matSubheader>Orders</h2>
+
+  <!-- ForUsers -->
+  <a mat-list-item routerLinkActive="list-item-active" routerLink="./orders"
+      *ngIf="userIsAuthenticated && userisrest">
+      <i class="fas fa-clock mx-3"></i>
+      Orders
+  </a>
+
   <h2 matSubheader>Menu</h2>
 
   <!-- ForUsers -->
@@ -17,7 +26,7 @@
   <h2 matSubheader>About</h2>
 
   <!-- ForUsers -->
-  <a mat-list-item routerLinkActive="list-item-active" routerLink="./details"
+  <a mat-list-item routerLinkActive="list-item-active" routerLink="./"
       *ngIf="userIsAuthenticated && userisrest">
       <i class="fas fa-clock mx-3"></i>
       About

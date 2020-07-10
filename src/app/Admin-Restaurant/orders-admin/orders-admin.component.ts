@@ -10,6 +10,8 @@ import { MenuService } from '../menu.service';
 })
 export class OrdersAdminComponent implements OnInit, OnDestroy {
   orders: any[] = [];
+  accept: any[] = [];
+  refused: any[] = [];
   isLoading = false;
   private orderSub: Subscription;
   userIsAuthenticated = false;
@@ -27,6 +29,16 @@ export class OrdersAdminComponent implements OnInit, OnDestroy {
         console.log(order);
         this.orders = order;
         this.isLoading = false;
+        this.orders = order.filter(res => {
+          return res.status.match('pending');
+        });
+        this.isLoading = false;
+        this.accept = order.filter(res => {
+          return res.status.match('Accepted');
+        });
+        this.refused = order.filter(res => {
+          return res.status.match('Declined');
+        });
       });
     this.userIsAuthenticated = this.authService.getIsAuth();
     this.userisAdmin = this.authService.getRest();

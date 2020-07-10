@@ -1,16 +1,27 @@
-mat-form-field {
-  padding: 15px;
-  width: 25%;
+mat-form-field,
+textarea {
+  width: 100%;
 }
 
 mat-spinner {
   margin: auto;
 }
 
-mat-spinner {
-  margin: auto;
+input[type="file"] {
+  visibility: hidden;
 }
 
-img{
-  width: 30%;
+.image-preview {
+  height: 5rem;
+  margin: 1rem 0;
+}
+
+.image-preview img {
+  height: 100%;
+}
+
+button{
+  margin-top: 20px;
+  align-items: flex-end;
+  text-align: right;
 }

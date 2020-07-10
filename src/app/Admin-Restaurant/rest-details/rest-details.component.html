@@ -1,40 +1,38 @@
-<div class="container mt-5 px-4">
-  <h1 class="text-danger text-right"> Details </h1>
-  <hr>
 
-  <div class="container-fluid row mb-5">
-      <div class="col-lg-4 col-md-4 col-12">
+<div class="aboutus-section ">
+  <div class="container">
+    <div class="row px-4">
+      <div class="col-md-8 col-sm-6 col-xs-12">
+        <div class="aboutus">
+          <h2 class="aboutus-title">About Us</h2>
+          <p class="aboutus-text">Name : <span class="font-weight-bold"> {{restaurant?.name}} </span></p>
+          <p class="aboutus-text">Contact Number : <span class="font-weight-bold"> {{restaurant?.contact}} </span></p>
+          <p class="aboutus-text">City : <span class="font-weight-bold"> {{restaurant?.city}} </span></p>
+          <p class="aboutus-text">Cuisines : <span class="font-weight-bold"> {{restaurant?.cuisine}} </span></p>
+          <p class="aboutus-text">Cost : <span class="font-weight-bold"> {{restaurant?.cost}} </span></p>
+          <p class="aboutus-text">House No. : <span class="font-weight-bold"> {{restaurant?.house_no}} </span></p>
+          <p class="aboutus-text">Street Name : <span class="font-weight-bold"> {{restaurant?.st_name}} </span></p>
+          <p class="aboutus-text">Postal Code : <span class="font-weight-bold"> {{restaurant?.postal_code}} </span></p>
+          <a class="aboutus-more" [routerLink]="['../addrestaurant', restaurant?.id  || 'all' ]">Edit</a>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-6 col-xs-12">
+        <div class="aboutus-banner">
           <img [src]="restaurant?.imagePath" alt="restaurant?.name" class="rounded-circle img-thumbnail">
+        </div>
       </div>
+    </div>
 
-      <div class="col-lg-2 col-md-2 col-12 ">
-          <p class="card-text my-4">Name : </p>
-          <p class="card-text my-4">Contact Number : </p>
-          <p class="card-text my-4">City :</p>
-          <p class="card-text my-4">Cuisines : </p>
-          <p class="card-text my-4">Cost :</p>
-          <p class="card-text my-4">House No : </p>
-          <p class="card-text my-4">Street Name :</p>
-          <p class="card-text my-4">Postal Code : </p>
-      </div>
+    <div class="container-fluid text-center card p-4 m-4">
+      <h2 >Services</h2>
+      <br>
+      <div class="row">
+        <div class="col-sm-4 p-2"  *ngFor="let add of restaurant?.additional">
+          <i class="fa fa-check icon text-success" aria-hidden="true"></i>
+          <p>{{ add }}</p>
+        </div>
+        <br><br>
+    </div>
 
-      <div class="col-lg-6 col-md-6 col-12 ">
-          <p class="card-text my-4">{{restaurant?.name}}</p>
-          <p class="card-text my-4">{{restaurant?.contact}}</p>
-          <p class="card-text my-4">{{restaurant?.city}}</p>
-          <p class="card-text my-4">{{restaurant?.cuisine}}</p>
-          <p class="card-text my-4">{{restaurant?.cost}}</p>
-          <p class="card-text my-4">{{restaurant?.house_no}}</p>
-          <p class="card-text my-4">{{restaurant?.st_name}}</p>
-          <p class="card-text my-4">{{restaurant?.postal_code}}</p>
-      </div>
-
-      <h2>Additional Information</h2>
-      <hr>
-      <ul class="container my-2" *ngFor="let add of restaurant?.additional">
-        <li>{{ add }}</li>
-      </ul>
-      <!-- [routerLink]="['/admin/create', emp?._id  || 'all' ]"     "-->
-          <button  class="btn btn-default ml-auto" [routerLink]="['../../addrestaurant', restaurant?.id  || 'all' ]">Edit</button>
   </div>
 </div>

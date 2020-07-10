@@ -1,44 +1,141 @@
-<div *ngIf="!userisAdmin">
-  <button mat-raised-button routerLink="/login">Login Fist</button>
-</div>
 
-<div class="container" *ngIf="userIsAuthenticated && userisAdmin">
-  <h2 class="text-danger">Orders</h2>
-  <div class="coantainer" *ngFor="let item of orders">
+<mat-tab-group>
+  <mat-tab label="Pending">
+    <div *ngIf="orders.length > 0 && !isLoading">
+      <div class="card my-4 mx-auto" *ngFor="let item of orders">
+        <div class="card-body">
+            <p class="text-right font-weight-bold">Order Id : <span class="text-danger">#{{ item?.id}}</span></p>
+            <h4>Restaurant Name: <span class="text-danger font-weight-bold">{{ item?.restname }}</span></h4>
+            <div *ngFor="let info of item?.info">
+              <p>Customer Name : <span class="font-weight-bold">{{ info?.name }}</span></p>
+              <p>Customer Address : {{ info?.address }}</p>
+              <p>Customer Contact : {{ info?.phone }}</p>
+              <p>Status: <span class="text-danger">{{ item?.status }}</span></p>
+            </div>
+            <table class="table table-hover" *ngIf="orders.length > 0">
+              <thead>
+                <tr>
+                  <th>S. No.</th>
+                  <th>Item Name</th>
+                  <th>Item Cost</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let order of item.orders">
+                  <!-- [routerLink]="['/employeedetails', employee?._id  || 'all' ]" -->
+                  <td><i class="fas fa-chevron-circle-right"></i></td>
+                  <td>{{ order?.name }}</td>
+                  <td>{{ order?.cost }} CAD</td>
+                </tr>
+              </tbody>
+            </table>
+            <mat-action-row *ngIf="userIsAuthenticated && userisAdmin && item?.status=='pending'  ">
+              <a mat-button color="primary" (click)="onAccept(item.id)">Accept</a>
+              <button mat-button color="warn" (click)="onDelete(item.id)">Reject</button>
+            </mat-action-row>
 
-
-    <mat-card class="mb-4">
-      <h3 class="text-danger"> {{ item?.restname }} </h3>
-      <div class="container" *ngFor="let info of item?.info">
-        <p> Customer Name : {{ info?.name }}</p>
-        <p>Customer Address : {{ info?.address }}</p>
-        <p>Customer Contact : {{ info?.phone }}</p>
-        <p class="text-danger">Status: {{ item?.status }}</p>
+          </div>
+        </div>
       </div>
 
-      <table class="table table-hover" *ngIf="orders.length > 0">
-        <thead>
-          <tr>
-            <th>S. No.</th>
-            <th>Item Name</th>
-            <th>Item Cost</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let order of item.orders">
-            <!-- [routerLink]="['/employeedetails', employee?._id  || 'all' ]" -->
-            <td><i class="fas fa-chevron-circle-right"></i></td>
-            <td>{{ order?.name }}</td>
-            <td>{{ order?.cost }}</td>
-          </tr>
-        </tbody>
-      </table>
-      <mat-action-row *ngIf="userIsAuthenticated && userisAdmin">
-        <a mat-button color="primary" (click)="onAccept(item.id)">Accept</a>
-        <button mat-button color="warn" (click)="onDelete(item.id)">Reject</button>
-      </mat-action-row>
-    </mat-card>
+      <div class="card my-4 mx-auto" *ngIf="orders.length <= 0 && !isLoading">
+        <div class="card-body">
+          <p class="info-text mat-body-1 text-center my-2">No Pending Orders!
+          </p>
+        </div>
+      </div>
+  </mat-tab>
 
-  </div>
-</div>
-<p *ngIf="orders.length <= 0"> No Pending Orders </p>
+  <mat-tab class="text-primary" label="Accepted">
+    <div *ngIf="accept.length > 0 && !isLoading">
+      <div class="card my-4 mx-auto" *ngFor="let item of accept">
+        <div class="card-body">
+          <p class="text-right font-weight-bold">Order Id : <span class="text-danger">#{{ item?.id}}</span></p>
+          <h4>Restaurant Name: <span class="text-danger font-weight-bold">{{ item?.restname }}</span></h4>
+          <div *ngFor="let info of item?.info">
+              <p>Customer Name :  <span class="font-weight-bold">{{ info?.name }}</span></p>
+              <p>Customer Address : {{ info?.address }}</p>
+              <p>Customer Contact : {{ info?.phone }}</p>
+              <p>Status: <span class="text-danger">{{ item?.status }}</span></p>
+            </div>
+            <table class="table table-hover" *ngIf="accept.length > 0">
+              <thead>
+                <tr>
+                  <th>S. No.</th>
+                  <th>Item Name</th>
+                  <th>Item Cost</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let order of item.orders">
+                  <!-- [routerLink]="['/employeedetails', employee?._id  || 'all' ]" -->
+                  <td><i class="fas fa-chevron-circle-right"></i></td>
+                  <td>{{ order?.name }}</td>
+                  <td>{{ order?.cost }} CAD</td>
+                </tr>
+              </tbody>
+            </table>
+            <mat-action-row *ngIf="userIsAuthenticated && userisAdmin && item?.status=='pending'  ">
+              <a mat-button color="primary" (click)="onAccept(item.id)">Accept</a>
+              <button mat-button color="warn" (click)="onDelete(item.id)">Reject</button>
+            </mat-action-row>
+
+          </div>
+        </div>
+      </div>
+
+    <div class="card my-4 mx-auto" *ngIf="accept.length <= 0 && !isLoading">
+      <div class="card-body">
+        <p class="info-text mat-body-1 text-center my-2">No Accepted Orders!
+        </p>
+      </div>
+    </div>
+
+  </mat-tab>
+  <mat-tab class="text-danger" label="Declined">
+    <div *ngIf="refused.length > 0 && !isLoading">
+      <div class="card my-4 mx-auto" *ngFor="let item of refused">
+        <div class="card-body">
+          <p class="text-right font-weight-bold">Order Id : <span class="text-danger">#{{ item?.id}}</span></p>
+          <h4>Restaurant Name: <span class="text-danger font-weight-bold">{{ item?.restname }}</span></h4>
+          <div *ngFor="let info of item?.info">
+              <p>Customer Name :  <span class="font-weight-bold">{{ info?.name }}</span></p>
+              <p>Customer Address : {{ info?.address }}</p>
+              <p>Customer Contact : {{ info?.phone }}</p>
+              <p>Status: <span class="text-danger">{{ item?.status }}</span></p>
+            </div>
+            <table class="table table-hover" *ngIf="refused.length > 0">
+              <thead>
+                <tr>
+                  <th>S. No.</th>
+                  <th>Item Name</th>
+                  <th>Item Cost</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let order of item.orders">
+                  <!-- [routerLink]="['/employeedetails', employee?._id  || 'all' ]" -->
+                  <td><i class="fas fa-chevron-circle-right"></i></td>
+                  <td>{{ order?.name }}</td>
+                  <td>{{ order?.cost }} CAD</td>
+                </tr>
+              </tbody>
+            </table>
+            <mat-action-row *ngIf="userIsAuthenticated && userisAdmin && item?.status=='pending'  ">
+              <a mat-button color="primary" (click)="onAccept(item.id)">Accept</a>
+              <button mat-button color="warn" (click)="onDelete(item.id)">Reject</button>
+            </mat-action-row>
+
+          </div>
+        </div>
+      </div>
+
+    <div class="card my-4 mx-auto" *ngIf="refused.length <= 0 && !isLoading">
+      <div class="card-body">
+        <p class="info-text mat-body-1 text-center my-2">No Declined Orders!
+        </p>
+      </div>
+    </div>
+
+  </mat-tab>
+</mat-tab-group>
