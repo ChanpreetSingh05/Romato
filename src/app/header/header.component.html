@@ -1,24 +1,28 @@
-<mat-toolbar color="primary">
+<mat-toolbar class="bg-white border-bottom shadow text-dark" >
   <span>
-    <a routerLink="/">MyMessages</a>
+    <a  class="text-danger font-weight-bold h3 ml-5" routerLink="/">Zomato</a>
   </span>
   <span class="spacer"></span>
   <ul>
     <li *ngIf="userIsAuthenticated">
       <a mat-button routerLink="/addrestaurant" routerLinkActive="mat-accent">New Post</a>
     </li>
+
+    <li *ngIf="userIsAuthenticated && !restIsAuthenticated">
     <a mat-button routerLink="/cart" routerLinkActive="mat-accent">Cart</a>
+    </li>
+
     <li *ngIf="!userIsAuthenticated">
       <a mat-button routerLink="/login" routerLinkActive="mat-accent">Login</a>
     </li>
     <li *ngIf="!userIsAuthenticated">
       <a mat-button routerLink="/signup" routerLinkActive="mat-accent">Signup</a>
     </li>
-    <li *ngIf="userIsAuthenticated">
-      <button mat-button (click)="onLogout()">Logout</button>
+    <li *ngIf="userIsAuthenticated && !restIsAuthenticated">
+      <a mat-button routerLink="/orders" routerLinkActive="mat-accent">Orders</a>
     </li>
     <li *ngIf="userIsAuthenticated">
-      <a mat-button routerLink="/orders" routerLinkActive="mat-accent">orders</a>
+      <button mat-button (click)="onLogout()">Logout</button>
     </li>
   </ul>
 </mat-toolbar>

@@ -47,7 +47,7 @@ router.post("/login", (req, res, next) => {
         });
       }
       const token = jwt.sign(
-        { email: fetchedUser.email, userId: fetchedUser._id , restId: fetchedUser.restid, isadmin: fetchedUser.isadmin, isrest: fetchedUser.isrest, isuser: fetchedUser.isuser  },
+        { email: fetchedUser.email, userId: fetchedUser._id , restId: fetchedUser.restid, name: fetchedUser.name, isadmin: fetchedUser.isadmin, isrest: fetchedUser.isrest, isuser: fetchedUser.isuser  },
         "secret_this_should_be_longer",
         { expiresIn: "1h" }
       );

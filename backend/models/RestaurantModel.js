@@ -19,6 +19,7 @@ const ZomatoRestaurant = mongoose.Schema({
   kids: { type: Boolean, default: true },
   wifi: { type: Boolean, default: true },
   imagePath: { type: String, required: true },
+  cover: { type: String, required: true },
   status: { type: Boolean, default: true }
 }, { collection: 'Restaurants' });
 

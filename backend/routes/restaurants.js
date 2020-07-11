@@ -26,6 +26,7 @@ router.post("", (req, res, next) => {
     kids: req.body.kids,
     wifi: req.body.wifi,
     imagePath: req.body.imagePath,
+    cover: req.body.cover,
     status: req.body.status,
   });
   RestaurantMode.save()
@@ -123,6 +124,7 @@ router.put("/updatecart", checkAuth, (req, res, next) => {
   });
 });
 
+//For Deletion
 router.put("/cart/:id", checkAuth, (req, res, next) => {
   CartModel.updateOne(
     {
@@ -153,6 +155,18 @@ router.get("/cart", checkAuth, (req, res, next) => {
       message: "Posts fetched Successfully",
       cart: documents,
     });
+  });
+});
+
+//Empty Cart
+router.delete("/cart", checkAuth, (req, res, next) => {
+  CartModel.deleteOne({userid: req.userData.userId }).then(result => {
+    console.log(result);
+    if(result.n > 0){
+      res.status(200).json({ message: "Empty successful!" });
+    }else{
+      res.status(401).json({ message: "Not Authorized !" });
+    }
   });
 });
 

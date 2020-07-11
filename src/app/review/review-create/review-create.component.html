@@ -1,6 +1,6 @@
 <mat-card>
   <mat-spinner *ngIf="isLoading"></mat-spinner>
-  <form [formGroup]="form" (submit)="onSavereview()" *ngIf="!isLoading">
+  <form class="p-4" [formGroup]="form" (submit)="onSavereview()" *ngIf="!isLoading">
     <mat-form-field>
       <textarea matInput rows="4" formControlName="content" placeholder="Review Content"></textarea>
       <mat-error *ngIf="form.get('content').invalid">Please enter a Review.</mat-error>
@@ -12,6 +12,7 @@
     <div class="image-preview" *ngIf="imagePreview !== '' && imagePreview && form.get('image').valid">
       <img [src]="imagePreview" [alt]="form.value.title">
     </div>
-   <button mat-raised-button color="accent" type="submit">Save Post</button>
+    <!-- <mat-error *ngIf="form.get('image').invalid">Image is Required.</mat-error> -->
+   <button class="btn btn-danger my-4" type="submit">Save Post</button>
   </form>
 </mat-card>

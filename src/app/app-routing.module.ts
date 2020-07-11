@@ -27,8 +27,7 @@ const routes: Routes = [
       { path: 'read', component: ReviewListComponent },
       { path: 'create', component: ReviewCreateComponent, canActivate: [AuthGuard] },
       { path: 'photos', component: ReviewPhotosComponent },
-      { path: '', component: ReviewListComponent,
-    children: [{ path: '', component: RestaurantMenuComponent }] }
+      { path: '', component: ReviewListComponent }
 
     ]
   },

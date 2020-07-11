@@ -3,13 +3,15 @@
 </div>
 
 <div class="container" *ngIf="userIsAuthenticated">
-  <div class="coantainer" *ngFor="let item of items">
-    <h2 class="text-danger">Your Orders</h2>
+  <div class="container" *ngFor="let item of items">
+    <div *ngIf="item.orders.length > 0">
+
+      <h2 class="text-danger">Your Orders</h2>
 
     <h2 class="text-danger">{{ item.restname }}</h2>
 
     <mat-card>
-      <table class="table table-hover" *ngIf="items.length > 0">
+      <table class="table table-hover">
         <thead>
           <tr>
             <th>S No.</th>
@@ -33,28 +35,38 @@
     </mat-card>
 
 
-  <mat-card class="mt-4">
-    <form #userForm="ngForm" (submit)="onSubmit(userForm, item?.restid, item?.orders, item?.restname)" >
-      <!-- <img class="img-fluid" src="{{ emp?.imagePath }}" alt=" {{ emp?.name }} "> -->
-      <mat-form-field>
-        <input matInput type="text" name="name" #name="ngModel" required placeholder="Enter the Name" ngModel>
-        <mat-error *ngIf="name.invalid && name.touched">Please enter a valid Name.</mat-error>
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput type="tel" name="phone" #phone="ngModel" required pattern="^\d{10}$"
-          placeholder="Enter the Mobile No." ngModel>
-        <mat-error *ngIf="phone.errors && (phone.invalid || phone.touched)">
-          <mat-error *ngIf="phone.errors.required">Phone number is required</mat-error>
-          <mat-error *ngIf="phone.errors.pattern">Phone number must be 10 digits</mat-error>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput type="name" name="address" #address="ngModel" required placeholder="Enter the Address" ngModel>
-        <mat-error *ngIf="address.invalid && address.touched">Please enter valid Address.</mat-error>
-      </mat-form-field>
-      <button mat-raised-button color="accent" type="submit">Submit</button>
+    <mat-card class="mt-4">
+      <form #userForm="ngForm" (submit)="onSubmit(userForm, item?.restid, item?.orders, item?.restname)">
+        <!-- <img class="img-fluid" src="{{ emp?.imagePath }}" alt=" {{ emp?.name }} "> -->
+        <mat-form-field>
+          <input matInput type="text" name="name" #name="ngModel" required placeholder="Enter the Name" ngModel>
+          <mat-error *ngIf="name.invalid && name.touched">Please enter a valid Name.</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput type="tel" name="phone" #phone="ngModel" required pattern="^\d{10}$"
+            placeholder="Enter the Mobile No." ngModel>
+          <mat-error *ngIf="phone.errors && (phone.invalid || phone.touched)">
+            <mat-error *ngIf="phone.errors.required">Phone number is required</mat-error>
+            <mat-error *ngIf="phone.errors.pattern">Phone number must be 10 digits</mat-error>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput type="name" name="address" #address="ngModel" required placeholder="Enter the Address"
+            ngModel>
+          <mat-error *ngIf="address.invalid && address.touched">Please enter valid Address.</mat-error>
+        </mat-form-field>
+        <button mat-raised-button color="accent" type="submit">Submit</button>
       </form>
-  </mat-card>
+    </mat-card>
+
+    </div>
+    <div class="card text-center m-5 p-5" *ngIf="item.orders.length <= 0">
+      <h6>Your Cart is Empty</h6>
+    </div>
+
+
+  </div>
+  <div class="card text-center m-5 p-5" *ngIf="items.length <= 0">
+    <h6>Your Cart is Empty</h6>
+  </div>
 </div>
-</div>
-<p *ngIf="items.length <= 0"> Empty Cart </p>

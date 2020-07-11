@@ -41,17 +41,15 @@ router.post(
       content: req.body.content,
       imagePath: url + "/Data/Review_images/" + req.file.filename,
       creator: req.userData.userId,
-      postID: req.body.postID
+      postID: req.body.postID,
+      name: req.userData.name,
     });
     // console.log('edt'+req.body.postID);
     // return res.status(200).json({reviewpost});
     reviewpost.save().then(createdPost => {
       res.status(201).json({
         message: "Post added successfully",
-        review: {
-          ...createdPost,
-          id: createdPost._id
-        }
+        review: createdPost
       });
     });
   }
@@ -71,7 +69,8 @@ router.put(
       _id: req.body.id,
       content: req.body.content,
       imagePath: imagePath,
-      creator: req.userData.userId
+      creator: req.userData.userId,
+      name: req.userData.name,
     });
     console.log(review);
     ReviewPost.updateOne({ _id: req.params.id, creator: req.userData.userId }, review).then(result => {

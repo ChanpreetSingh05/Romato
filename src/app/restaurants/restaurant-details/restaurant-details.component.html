@@ -1,111 +1,76 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
-<div class="post">
-  <div class="poster">
-    <mat-card>
-      <div class="card">
-        <div class="card-image">
-          <img [src]="restaurant?.imagePath" [alt]="restaurant?.name" />
-        </div>
 
-        <div class="card-heading">
-          <h1>{{ restaurant?.name }}</h1>
-          <p class="dull">{{ restaurant?.city }} &#8226; {{restaurant?.cuisine}}</p>
-          <!-- <p class="dull">{{ restaurant.House_no }} {{ restaurant.St_Name}}, {{restaurant.City}} {{restaurant.Postal_Code}}</p> -->
-        </div>
+<div class="gVNnqW" [ngStyle]="{ 'background-image': 'url(&quot;' + restaurant?.cover + '&quot;)'}">
+</div>
+
+<div class="container-fluid border-bottom bg-white mb-3 shadow rounded">
+
+  <div class="container p-3">
+
+    <div class="row">
+      <div class="col-lg-2 col-md-4 col-sm-12">
+        <img class="rounded-circle img-thumbnail" [src]="restaurant?.imagePath" [alt]="restaurant?.name" />
       </div>
 
-      <hr>
-
-    </mat-card>
+      <div class="col-lg-10 col-md-8 col-sm-12 my-2">
+        <h1 class="text-danger font-weight-bold">{{ restaurant?.name }}</h1>
+        <p class="small">{{ restaurant?.city }} &#8226; {{restaurant?.cuisine}}</p>
+        <p class="small">CAD {{ restaurant?.cost }}</p>
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="post">
-  <mat-card>
-<!--
-    <p>
-      <button (click)="writeComment()">Write</button>
-      <button (click)="showComment()">Read</button>
-    </p> -->
+<div class="container-fluid clr">
+  <div class="container p-3">
+    <h6 class="mt-4">Overview</h6>
+    <hr class="mb-4">
 
-    <mat-tab-group  (selectedTabChange)="fireEvent($event)">
-      <mat-tab label="Overview">
-        <div class="card-details">
-          <div class="card1">
-            <div class="sec1">
-              <p class="dull2">Phone Number</p>
-              <p>{{ restaurant?.contact }}</p>
-            </div>
-            <div class="sec1">
-              <p class="dull2">Cuisines</p>
-              <p>{{ restaurant?.cuisine }}</p>
-            </div>
-            <div class="sec1">
-              <p class="dull2">Average Cost</p>
-              <p>CAD {{ restaurant?.cost }}</p>
-            </div>
-          </div>
-
-          <div class="card1">
-            <div class="sec1">
-              <p class="dull2">Address</p>
-              <p>{{ restaurant?.house_no }} {{ restaurant?.st_name}}, {{restaurant?.city}} {{restaurant?.postal_code}}
-              </p>
-            </div>
-          </div>
-
-          <div class="card1">
-            <div class="sec1">
-              <p class="dull2">Additional Services</p>
-              <ul *ngFor="let add of restaurant?.additional">
-                <li>{{ add }}</li>
-              </ul>
-            </div>
-          </div>
-
+    <div class="card py-1 px-5 shadow-sm bg-white">
+      <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-12">
+          <p class="text-muted  font-weight-bold small my-3">Phone Number</p>
+          <p>{{ restaurant?.contact }}</p>
+          <p class="text-muted font-weight-bold small my-3">Cuisines</p>
+          <p>{{ restaurant?.cuisine }}</p>
+          <p class="text-muted font-weight-bold small my-3">Average Cost</p>
+          <p>CAD {{ restaurant?.cost }}</p>
         </div>
-      </mat-tab>
-      <!-- <mat-tab label="Photos">
-        <app-review-photos></app-review-photos>
-      </mat-tab>
-      <mat-tab label="Reviews">
-        <app-review-create></app-review-create>
-        <app-review-list></app-review-list>
-      </mat-tab> -->
-    </mat-tab-group>
 
-    <!-- <div class="post" *ngIf="edited==true" >
-     <router-outlet></router-outlet>
-    </div> -->
-  </mat-card>
-</div>
+        <div class="col-lg-4 col-md-4 col-sm-12 my-2">
+          <p class="text-muted font-weight-bold small my-3">Address</p>
+          <p>{{ restaurant?.house_no }} {{ restaurant?.st_name}}, {{restaurant?.city}} {{restaurant?.postal_code}}</p>
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-sm-12 my-2">
+          <p class="text-muted font-weight-bold small my-3">Additional Services</p>
+          <ul *ngFor="let add of restaurant?.additional">
+            <li>{{ add }}</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <h6 class="mt-5">Menu</h6>
+    <hr class="mb-4">
+    <div class="py-1 px-5">
+      <app-restaurant-menu></app-restaurant-menu>
+    </div>
 
 
-<div class="post1">
-  <div class="poster">
-    <mat-card>
-      <h2>Menu</h2>
-      <hr>
-     <app-restaurant-menu></app-restaurant-menu>
-    </mat-card>
-  </div>
-</div>
+    <h6 class="mt-5">Add Reviews</h6>
+    <hr class="mb-4">
+    <app-review-create></app-review-create>
 
-<div class="post1">
-  <div class="poster">
-
-    <mat-card>
-      <h2>Add Review</h2>
-      <hr>
-      <app-review-create></app-review-create>
-    </mat-card>
-
-    <mat-card class="mt-4">
-      <h2>Reviews</h2>
-      <hr>
+    <h6 class="mt-5">Reviews</h6>
+    <hr class="mb-4">
+    <div class="card shadow-sm bg-white px-4 py-3">
       <router-outlet></router-outlet>
-    </mat-card>
+    </div>
+
   </div>
+
 </div>
 
 

@@ -18,10 +18,8 @@
    background-color: #cb202d;
  }
 
- .card{
-   display: flex;
-   flex-direction: column;
-   padding: 8px;
+ img{
+   width: 100px;
  }
 
  .dull{

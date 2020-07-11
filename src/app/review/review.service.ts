@@ -26,10 +26,11 @@ export class ReviewService {
             reviews: reviewData.reviews.map(review => {
               return {
                 content: review.content,
-                id: review._id,
+                _id: review._id,
                 imagePath: review.imagePath,
                 creator: review.creator,
-                postID: review.postID
+                postID: review.postID,
+                name: review.name
               };
             }),
             maxReviews: reviewData.maxReviews
@@ -55,6 +56,7 @@ export class ReviewService {
       content: string;
       imagePath: string;
       creator: string;
+      name: string;
     }>('http://localhost:3000/api/reviews/' + id);
   }
 
@@ -69,13 +71,19 @@ export class ReviewService {
         reviewData
       )
       .subscribe(responseData => {
+        this.reviews.push(responseData.review);
+        this.reviewsUpdated.next({
+          reviews: [...this.reviews],
+          reviewCount: 1
+        });
+        console.log(this.reviews);
         console.log(responseData);
       });
   }
 
   updateReview(id: string, content: string, image: File | string) {
     // tslint:disable-next-line: prefer-const
-    let reviewData: Review | FormData;
+    let reviewData: any | FormData;
     if (typeof image === 'object') {
       reviewData = new FormData();
       reviewData.append('id', id);
@@ -86,7 +94,8 @@ export class ReviewService {
         id,
         content,
         imagePath: image,
-        creator: null
+        creator: null,
+        name: ''
       };
     }
     this.http

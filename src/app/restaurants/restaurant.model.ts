@@ -18,4 +18,5 @@ export interface RestaurantModel {
   kids: boolean;
   wifi: boolean;
   imagePath: string;
+  cover: string;
 }

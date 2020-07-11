@@ -1,15 +1,24 @@
 <div *ngIf="reviews.length > 0 && !isLoading">
   <div *ngFor="let review of reviews">
-    <p>{{ review.content }}</p>
-    <div class="post-image" *ngIf="review.imagePath !== '' " >
-      <img [src]="review.imagePath" alt="review Pic">
-    </div>
+    <div class="mt-3 mx-5">
+      <h5> {{ review?.name }} </h5>
 
-    <mat-action-row *ngIf="userIsAuthenticated && userId === review.creator">
-      <a mat-button color="primary" [routerLink]="['/write', review.id]">EDIT</a>
-      <button mat-button color="warn" (click)="onDelete(review.id)">DELETE</button>
-    </mat-action-row>
+      <div class="post-image" *ngIf="review.imagePath !== '' ">
+        <img [src]="review.imagePath" alt="review Pic">
+      </div>
+      <div class="card p-2 my-2">
+        <p>{{ review.content }}</p>
+      </div>
+
+
+      <mat-action-row class="mt-4" *ngIf="userIsAuthenticated && userId === review.creator">
+        <i class="fas fa-pen mr-5 my-4 text-success" [routerLink]="['/write', review._id]"> Edit</i>
+        <i class="fas fa-trash-alt my-3 text-danger" (click)="onDelete(review._id)"> Delete</i>
+      </mat-action-row>
+    </div>
+    <hr class="py-3">
   </div>
+
 </div>
 <mat-paginator [length]="totalPosts" [pageSize]="postsPerPage" (page)="onChangedPage($event)"
   *ngIf="reviews.length > 0"></mat-paginator>

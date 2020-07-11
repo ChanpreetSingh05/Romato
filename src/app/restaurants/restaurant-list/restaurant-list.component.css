@@ -10,28 +10,29 @@
    background-color: #cb202d;
  }
 
-h1{
-  color: #cb202d;
-  font-style: bolder;
-  font-weight: bolder;
-  margin: 2px;
-  }
- h2{
-   color: black;
-   margin: 2px;
- }
- .dull{
-   color: grey;
-   margin: 2px;
- }
- .dull2{
-  color: grey;
+ .clr{
+  background-color: #F2F4F5;
 }
 
-h3{
-  margin: 2px;
-  font-size: 160%;
-}
 img{
   width: 130px;
+}
+
+.gVNnqW {
+  background-size: cover;
+  width: 100%;
+  background-position: center center;
+  height: 300px;
+  display: flex;
+    position: relative;
+    border-bottom: 1px solid rgb(225, 229, 232)
+}
+
+.card:focus {
+  outline: 0;
+}
+
+.card:hover {
+  box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
+  cursor: pointer;
 }

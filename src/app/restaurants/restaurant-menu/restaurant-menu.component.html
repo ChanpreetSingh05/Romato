@@ -5,26 +5,84 @@
       <div class="card-heading">
         <mat-tab-group>
           <mat-tab label="BreakFast">
-            <div class="card" *ngFor="let breakfast of menu.breakfast">
+            <div class="container my-5">
+              <div class="card-columns">
+                <div class="card card-body shadow p-3 bg-white rounded" *ngFor="let breakfast of menu.breakfast">
+                  <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-9 col-xs-12">
+                      <h6 class="text-truncate">{{ breakfast?.name }}</h6>
+                      <p class="small text-secondary">Tito's Vodka and White Créme de Cacao dusted with hand shaved
+                        chocolate.</p>
+                      <p class="text-dark font-weight-bold">$ {{ breakfast?.cost }}</p>
+                      <td class="text-right">
+                        <button class="btn btn-link h6" (click)='addCart(breakfast._id, breakfast.name, breakfast.cost,
+            menu.restname )'><small><i class="fas fa-plus mx-1 h6"></i> Add to cart</small></button>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-3 col-xs-12">
+                      <img [src]="breakfast?.imagepath" [alt]="breakfast?.name" class="rounded-circle w-100">
+                    </div>
+                  </div>
+
+
+                </div>
+              </div>
+
+              <!--
               <mat-card>
                 <p class="dull">{{ breakfast.name }}</p>
                 <p class="dull1">{{ breakfast.cost }}</p>
-                <button mat-raised-button (click)='addCart(breakfast._id, breakfast.name, breakfast.cost, menu.restname )'>Add To
+                <button mat-raised-button
+                  (click)='addCart(breakfast._id, breakfast.name, breakfast.cost, menu.restname )'>Add To
                   cart</button>
-              </mat-card>
+              </mat-card> -->
             </div>
           </mat-tab>
           <mat-tab label="Lunch">
-            <div class="card" *ngFor="let breakfast of menu.lunch">
-              <p class="dull">{{ breakfast.name }}</p>
-              <p class="dull1">{{ breakfast.cost }}</p>
-            </div>
+            <div class="container my-5">
+              <div class="card-columns">
+                <div class="card card-body shadow p-3 bg-white rounded" *ngFor="let breakfast of menu.lunch">
+                  <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-9 col-xs-12">
+                      <h6 class="text-truncate">{{ breakfast?.name }}</h6>
+                      <p class="small text-secondary">Tito's Vodka and White Créme de Cacao dusted with hand shaved
+                        chocolate.</p>
+                      <p class="text-dark font-weight-bold">$ {{ breakfast?.cost }}</p>
+                      <td class="text-right">
+                        <button class="btn btn-link h6" (click)='addCart(breakfast._id, breakfast.name, breakfast.cost,
+            menu.restname )'><small><i class="fas fa-plus mx-1 h6"></i> Add to cart</small></button>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-3 col-xs-12">
+                      <img [src]="breakfast?.imagepath" [alt]="breakfast?.name" class="rounded-circle w-100">
+                    </div>
+                  </div>
 
+
+                </div>
+              </div>
+            </div>
           </mat-tab>
           <mat-tab label="Dinner">
-            <div class="card" *ngFor="let breakfast of menu.dinner">
-              <p class="dull">{{ breakfast.name }}</p>
-              <p class="dull1">{{ breakfast.cost }}</p>
+            <div class="container my-5">
+              <div class="card-columns">
+                <div class="card card-body shadow p-3 bg-white rounded" *ngFor="let breakfast of menu.dinner">
+                  <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-9 col-xs-12">
+                      <h6 class="text-truncate">{{ breakfast?.name }}</h6>
+                      <p class="small text-secondary">Tito's Vodka and White Créme de Cacao dusted with hand shaved
+                        chocolate.</p>
+                      <p class="text-dark font-weight-bold">$ {{ breakfast?.cost }}</p>
+                      <td class="text-right">
+                        <button class="btn btn-link h6" (click)='addCart(breakfast._id, breakfast.name, breakfast.cost,
+            menu.restname )'><small><i class="fas fa-plus mx-1 h6"></i> Add to cart</small></button>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-3 col-xs-12">
+                      <img [src]="breakfast?.imagepath" [alt]="breakfast?.name" class="rounded-circle w-100">
+                    </div>
+                  </div>
+
+
+                </div>
+              </div>
             </div>
           </mat-tab>
         </mat-tab-group>

@@ -1,61 +1,204 @@
+<div class="container py-2 px-4" id="fullheight">
+
+  <h1>Employee</h1>
+  <hr>
+  <div class="container">
+    <mat-card>
+      <mat-spinner *ngIf="isLoading"></mat-spinner>
+      <form [formGroup]="form" (submit)="onSubmit()" *ngIf="!isLoading">
+
+        <div>
+          <button mat-stroked-button type="button" (click)="filePicker1.click()">Pick Restaurant Cover Image</button>
+          <input type="file" #filePicker1 (change)="onCoverPicked($event)">
+        </div>
+        <div class="image-preview" *ngIf="CoverPreview !== '' && CoverPreview && form.get('cover').valid">
+          <img [src]="CoverPreview" [alt]="form.value.title">
+        </div>
+
+        <div>
+          <button mat-stroked-button type="button" (click)="filePicker.click()">Pick Restaurant Logo</button>
+          <input type="file" #filePicker (change)="onImagePicked($event)">
+        </div>
+        <div class="image-preview" *ngIf="imagePreview !== '' && imagePreview && form.get('image').valid">
+          <img [src]="imagePreview" [alt]="form.value.title">
+        </div>
+
+        <mat-form-field>
+          <input matInput formControlName="restaurantname" placeholder="Enter Restaurant Name">
+          <mat-error *ngIf="form.get('restaurantname').invalid">Please enter a valid Name.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput formControlName="restaurantcuisine" type="text" placeholder="Restaurant Cuisine">
+          <mat-error *ngIf="form.get('restaurantcuisine').invalid">Please enter a valid Name.</mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field>
+
+          <input matInput formControlName="restaurantcontact" type="text" placeholder="Restaurant Contact Number">
+          <mat-error *ngIf="form.get('restaurantcontact').invalid">Please enter a valid Name.</mat-error>
+
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput formControlName="restauranthouse" type="text" placeholder="Restaurant Building Number">
+          <mat-error *ngIf="form.get('restauranthouse').invalid">Please enter a valid Name.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput formControlName="restaurantstreet" type="text" placeholder="Restaurant Street Name">
+          <mat-error *ngIf="form.get('restaurantstreet').invalid">Please enter a valid Name.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput formControlName="restaurantcity" type="text" placeholder="Restaurant City Name">
+          <mat-error *ngIf="form.get('restaurantcity').invalid">Please enter a valid Name.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput formControlName="restaurantpostal" type="text" placeholder="Restaurant Postal Code">
+          <mat-error *ngIf="form.get('restaurantpostal').invalid">Please enter a valid Name.</mat-error>
+
+        </mat-form-field>
+
+        <mat-form-field>
+
+          <input matInput formControlName="restaurantprovince" type="text" placeholder="Restaurant Province">
+          <mat-error *ngIf="form.get('restaurantprovince').invalid">Please enter a valid Name.</mat-error>
+
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput formControlName="restaurantcost" type="text" placeholder="Average Cost for 2 persons">
+          <mat-error *ngIf="form.get('restaurantcost').invalid">Please enter a valid Name.</mat-error>
+
+        </mat-form-field>
+
+        <label id="open">Opening Status</label>
+        <mat-radio-group aria-label="open" formControlName="restaurantOpeningStatus">
+          <mat-radio-button value="true">Opened</mat-radio-button>
+          <mat-radio-button value="false">Opening Soon</mat-radio-button>
+        </mat-radio-group>
+
+        <h1>Additional Services</h1>
+
+        <label id="alcohol">Alcohol</label>
+        <mat-radio-group aria-label="alcohol" formControlName="restaurantAlcohol">
+          <mat-radio-button value="Alcohol">Serves Alcohol</mat-radio-button>
+          <mat-radio-button value="Non-Alcohol">Doesn't Serves Alcohol</mat-radio-button>
+        </mat-radio-group>
+
+        <label id="radio-serv">Services</label>
+        <section aria-label="radio-serv" class="example-section">
+          <mat-checkbox formControlName="restaurantbreakfast">Breakfast</mat-checkbox>
+          <mat-checkbox formControlName="restaurantlunch">Lunch
+          </mat-checkbox>
+          <mat-checkbox formControlName="restaurantdinner">Dinner
+          </mat-checkbox>
+          <mat-checkbox formControlName="restaurantcafe">Cafe
+          </mat-checkbox>
+          <mat-checkbox formControlName="restaurantnightlife">Night
+            Life</mat-checkbox>
+        </section>
+
+
+        <label id="radio-dine">Dine-IN</label>
+        <mat-radio-group aria-label="radio-dine" formControlName="restaurantdinein">
+          <mat-radio-button value="Dine In">Dine In</mat-radio-button>
+          <mat-radio-button value="Take Out">Take Out</mat-radio-button>
+        </mat-radio-group>
+
+        <label id="radio-seating">Seating</label>
+        <section aria-label="radio-seating" class="example-section">
+          <mat-checkbox formControlName="indoorseating">Indoor Seating
+          </mat-checkbox>
+          <mat-checkbox formControlName="outdoorseating">Outdoor Seating
+          </mat-checkbox>
+        </section>
+
+
+        <label id="radio-wifi">Wifi</label>
+          <mat-radio-group aria-label="radio-wifi" formControlName="restaurantwifi">
+            <mat-radio-button value="Wifi">Wifi Available</mat-radio-button>
+            <mat-radio-button value="No Wifi">Wifi Not Available</mat-radio-button>
+          </mat-radio-group>
+
+          <label id="radio-Parking">Parking Available:</label>
+          <mat-radio-group aria-label="radio-Parking" formControlName="restaurantparking">
+            <mat-radio-button value="Parking">Yes</mat-radio-button>
+            <mat-radio-button value="No Parking">No</mat-radio-button>
+          </mat-radio-group>
+
+        <button mat-raised-button color="accent" type="submit">Login</button>
+      </form>
+    </mat-card>
+
+  </div>
+
+
+
+
+</div>
+<!--
 <div class="container">
   <mat-card>
-    <!-- <mat-spinner *ngIf="isLoading"></mat-spinner> -->
-    <!-- <form [formGroup]="form" (submit)="onSaveRestaurant()" *ngIf="!isLoading">-->
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+    <form [formGroup]="form" (submit)="onSaveRestaurant()" *ngIf="!isLoading">
     <form (submit)="onAdding(addForm)" #addForm="ngForm">
       <mat-form-field>
         <input matInput [ngModel]="restaurant?.name" name="restaurantname" ngModel type="text"
           placeholder="Restaurant Name" #restaurantname="ngModel" required>
-        <!-- <mat-error *ngIf="rnameInput.invalid">Please enter a valid Restaurant Name.</mat-error> -->
+        <mat-error *ngIf="rnameInput.invalid">Please enter a valid Restaurant Name.</mat-error>
       </mat-form-field>
 
       <mat-form-field>
         <input matInput [ngModel]="restaurant?.cuisine" name="restaurantcuisine" ngModel type="text"
           placeholder="Restaurant Cuisine" #restaurantcuisine="ngModel" required>
-        <!-- <mat-error *ngIf="nameInput.invalid">Please enter a valid Restaurant Name.</mat-error> -->
+        <mat-error *ngIf="nameInput.invalid">Please enter a valid Restaurant Name.</mat-error>
       </mat-form-field>
 
 
       <mat-form-field>
         <input matInput [ngModel]="restaurant?.contact" name="restaurantcontact" ngModel type="text"
           placeholder="Restaurant Contact" #restaurantcontact="ngModel" required>
-        <!-- <mat-error *ngIf="nameInput.invalid">Please enter a valid Restaurant Name.</mat-error> -->
+        <mat-error *ngIf="nameInput.invalid">Please enter a valid Restaurant Name.</mat-error>
       </mat-form-field>
 
       <mat-form-field>
         <input matInput [ngModel]="restaurant?.house_no" name="restauranthouse" ngModel type="text"
           placeholder="Restaurant House Number" #restauranthouse="ngModel" required>
-        <!-- <mat-error *ngIf="nameInput.invalid">Please enter a valid Restaurant Name.</mat-error> -->
+        <mat-error *ngIf="nameInput.invalid">Please enter a valid Restaurant Name.</mat-error>
       </mat-form-field>
 
       <mat-form-field>
         <input matInput [ngModel]="restaurant?.st_name" name="restaurantstreet" ngModel type="text"
           placeholder="Restaurant Street" #restaurantstreet="ngModel" required>
-        <!-- <mat-error *ngIf="nameInput.invalid">Please enter a valid Restaurant Name.</mat-error> -->
+        <mat-error *ngIf="nameInput.invalid">Please enter a valid Restaurant Name.</mat-error>
       </mat-form-field>
 
       <mat-form-field>
         <input matInput [ngModel]="restaurant?.city" name="restaurantcity" ngModel type="text"
           placeholder="Restaurant City" #restaurantcity="ngModel" required>
-        <!-- <mat-error *ngIf="nameInput.invalid">Please enter a valid Restaurant Name.</mat-error> -->
+        <mat-error *ngIf="nameInput.invalid">Please enter a valid Restaurant Name.</mat-error>
       </mat-form-field>
 
       <mat-form-field>
         <input matInput [ngModel]="restaurant?.postal_code" name="restaurantpostal" ngModel type="text"
           placeholder="Restaurant Postal" #restaurantpostal="ngModel" required>
-        <!-- <mat-error *ngIf="nameInput.invalid">Please enter a valid Restaurant Name.</mat-error> -->
+        <mat-error *ngIf="nameInput.invalid">Please enter a valid Restaurant Name.</mat-error>
       </mat-form-field>
 
       <mat-form-field>
         <input matInput [ngModel]="restaurant?.province" name="restaurantprovince" ngModel type="text"
           placeholder="Province" #restaurantprovince="ngModel" required>
-        <!-- <mat-error *ngIf="nameInput.invalid">Please enter a valid Restaurant Name.</mat-error> -->
+        <mat-error *ngIf="nameInput.invalid">Please enter a valid Restaurant Name.</mat-error>
       </mat-form-field>
 
       <mat-form-field>
         <input matInput [ngModel]="restaurant?.cost" name="restaurantcost" ngModel type="text"
           placeholder="Average Cost for 2 persons" #restaurantcost="ngModel" required>
-        <!-- <mat-error *ngIf="nameInput.invalid">Please enter a valid Restaurant Name.</mat-error> -->
+        <mat-error *ngIf="nameInput.invalid">Please enter a valid Restaurant Name.</mat-error>
       </mat-form-field>
 
       <label id="open">Opening Status</label>
@@ -82,7 +225,8 @@
         </mat-checkbox>
         <mat-checkbox [ngModel]="rest.dinner" name="restaurantdinner" ngModel #restaurantdinner="ngModel">Dinner
         </mat-checkbox>
-        <mat-checkbox [ngModel]="rest.cafe" name="restaurantcafe" ngModel #restaurantcafe="ngModel">Cafe</mat-checkbox>
+        <mat-checkbox [ngModel]="rest.cafe" name="restaurantcafe" ngModel #restaurantcafe="ngModel">Cafe
+        </mat-checkbox>
         <mat-checkbox [ngModel]="rest.night" name="restaurantnightlife" ngModel #restaurantnightlife="ngModel">Night
           Life</mat-checkbox>
       </section>
@@ -119,7 +263,7 @@
       <button mat-raised-button color="accent" type="submit">Login</button>
     </form>
   </mat-card>
-</div>
+</div> -->
 <!-- <form> -->
 <!-- <mat-form-field> -->
 <!-- <textarea matInput type="text" formControlName="restaurantname" placeholder="Restaurant Name"></textarea> -->

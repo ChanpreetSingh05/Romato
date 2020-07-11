@@ -43,12 +43,6 @@
    background-color: #cb202d;
  }
 
-h1{
-  font-size: xx-large;
-  margin-bottom: 50px;
-  color: #cb202d;
-  margin-left: 2px;
-  }
  h2{
    color: black;
    margin: 2px;
@@ -58,12 +52,9 @@ h1{
    width: 130px;
  }
 
- .dull{
-   color: grey;
-   margin-top: 18px;
-   margin-bottom: 25px;
-   margin-left: 2px;
- }
+ .clr{
+   background-color: #F2F4F5;
+}
 
  .dull2{
   color: grey;
@@ -73,4 +64,14 @@ h1{
 h3{
   margin: 2px;
   font-size: 160%;
+}
+
+.gVNnqW {
+  background-size: cover;
+  width: 100%;
+  background-position: center center;
+  height: 380px;
+  display: flex;
+    position: relative;
+    border-bottom: 1px solid rgb(225, 229, 232)
 }

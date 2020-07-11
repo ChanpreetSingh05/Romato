@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Params } from '@angular/router';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { mimeType } from './mime-type.validator';
 import { Review } from '../review.model';
@@ -40,10 +40,11 @@ export class ReviewCreateComponent implements OnInit {
         this.reviewsService.getReview(this.reviewId).subscribe(reviewData => {
           this.isLoading = false;
           this.review = {
-            id: reviewData._id,
+            _id: reviewData._id,
             content: reviewData.content,
             imagePath: reviewData.imagePath,
-            creator: reviewData.creator
+            creator: reviewData.creator,
+            name: reviewData.name
           };
           this.form.setValue({
             content: this.review.content,
@@ -52,7 +53,10 @@ export class ReviewCreateComponent implements OnInit {
         });
       } else {
         this.mode = 'create';
-        this.parentID = this.route.parent.snapshot.paramMap.get('ID');
+        this.route.params.subscribe((params: Params) => {
+          // tslint:disable-next-line: no-string-literal
+          this.parentID = params['ID'];
+        });
         this.reviewId = null;
       }
     });
@@ -62,8 +66,8 @@ export class ReviewCreateComponent implements OnInit {
     const file = (event.target as HTMLInputElement).files[0];
     this.form.patchValue({ image: file });
     this.form.get('image').updateValueAndValidity();
-    console.log(file);
-    console.log(this.form);
+    // console.log(file);
+    // console.log(this.form);
     const reader = new FileReader();
     reader.onload = () => {
       this.imagePreview = reader.result as string;
@@ -77,6 +81,7 @@ export class ReviewCreateComponent implements OnInit {
     }
     this.isLoading = true;
     if (this.mode === 'create') {
+      // console.log(this.parentID);
       this.reviewsService.addReview(
         this.form.value.content,
         this.form.value.image,

@@ -36,6 +36,7 @@ export class RestaurantDetailsComponent implements OnInit {
             st_name: restaurantData.st_name,
             postal_code: restaurantData.postal_code,
             imagePath: restaurantData.imagePath,
+            cover: restaurantData.cover,
             additional: restaurantData.additional
           };
           console.log(this.restaurant.city);

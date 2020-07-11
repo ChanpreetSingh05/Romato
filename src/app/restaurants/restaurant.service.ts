@@ -16,7 +16,7 @@ export class RestaurantsService {
   private menusUpdated = new Subject<any[]>();
   private parentID = '';
   // private prev_rest_id = '';
-  cart: CartModel[] = [];
+  cart: any[] = [];
   private cartUpdated = new Subject<CartModel[]>();
   order: any[] = [];
   private orderUpdated = new Subject<any[]>();
@@ -35,6 +35,43 @@ export class RestaurantsService {
       return;
     }
   }
+
+
+  // To be Done
+  postRest(name: string,
+           cuisine: string,
+           contact: string,
+           street: string,
+           house: string,
+           city: string,
+           postal: string,
+           province: string,
+           cost: string,
+           OpeningStatus: string,
+           Alcohol: string,
+           dinein: string,
+           breakfast: string,
+           lunch: string,
+           dinner: string,
+           cafe: string,
+           nightlife: string,
+           indoorseating: string,
+           outdoorseating: string,
+           wifi: string,
+           parking: string,
+           image: File,
+           cover: File) {
+    const Data = new FormData();
+    Data.append('name', name);
+    Data.append('image', image, 'image');
+    Data.append('cost', cost);
+    this.http
+      .post('http://localhost:3000/api/menu/brkfast', Data)
+      .subscribe(response => {
+        console.log(response);
+      });
+  }
+
 
   getRestaurants() {
     // return [...this.posts];
@@ -62,6 +99,7 @@ export class RestaurantsService {
             kids: restaurant.kids,
             wifi: restaurant.wifi,
             imagePath: restaurant.imagePath,
+            cover: restaurant.cover,
             id: restaurant._id
           };
         });
@@ -78,7 +116,7 @@ export class RestaurantsService {
 
   getrestaurantdetails(id: string) {
     // tslint:disable-next-line: max-line-length
-    return this.http.get<{ _id: string, name: string, contact: number, city: string, cuisines: string, province: string, cost: string, house_no: string, st_name: string, postal_code: string, imagePath: string, additional: Array<string> }>(
+    return this.http.get<{ _id: string, name: string, contact: number, city: string, cuisines: string, province: string, cost: string, house_no: string, st_name: string, postal_code: string, imagePath: string,  cover: string, additional: Array<string> }>(
       'http://localhost:3000/api/restaurants/details/' + id
     );
   }
@@ -127,24 +165,26 @@ export class RestaurantsService {
     if (type === 'breakfast') {
       this.http.put('http://localhost:3000/api/menu/brkfastdelete', Data)
         .subscribe(() => {
-          const updatedPosts = this.menus.filter(post => post._id !== id);
-          this.menus = updatedPosts;
+          this.menus.forEach((o) => {
+            o.breakfast = o.breakfast.filter(s => s._id !== id);
+          });
           this.menusUpdated.next([...this.menus]);
           // this.router.navigate(['employeelist']);
         });
     } else if (type === 'lunch') {
       this.http.put('http://localhost:3000/api/menu/lunchdelete', Data)
         .subscribe(() => {
-          const updatedPosts = this.menus.filter(post => post._id !== id);
-          this.menus = updatedPosts;
+          this.menus.forEach((o) => {
+            o.lunch = o.lunch.filter(s => s._id !== id);
+          });
           this.menusUpdated.next([...this.menus]);
-          // this.router.navigate(['employeelist']);
         });
     } else if (type === 'dinner') {
       this.http.put('http://localhost:3000/api/menu/dinnerdelete', Data)
         .subscribe(() => {
-          const updatedPosts = this.menus.filter(post => post._id !== id);
-          this.menus = updatedPosts;
+          this.menus.forEach((o) => {
+            o.dinner = o.dinner.filter(s => s._id !== id);
+          });
           this.menusUpdated.next([...this.menus]);
           // this.router.navigate(['employeelist']);
         });
@@ -168,6 +208,7 @@ export class RestaurantsService {
         .post('http://localhost:3000/api/restaurants/cart', cartData)
         .subscribe(response => {
           console.log(response);
+          // this.router.navigate(['./menu']);
         });
     }
   }
@@ -221,14 +262,19 @@ export class RestaurantsService {
   deletePost(cartId: string) {
     this.http.put('http://localhost:3000/api/restaurants/cart/' + cartId, '')
       .subscribe(() => {
-        const updatedCarts = this.cart.filter(post => post._id !== cartId);
-        this.cart = updatedCarts;
+        this.cart.forEach((o) => {
+          o.orders = o.orders.filter(s => s._id !== cartId);
+        });
+      //   const updatedCarts = this.cart.order.filter(post => {
+      //     return (post.orders._id !== cartId);
+      // }
+      // );
         this.cartUpdated.next([...this.cart]);
       });
   }
 
 
-  postorder(name: string, phone: string, address: string, restid: string, orders: Array<string>, restname: string, ) {
+  postorder(name: string, phone: string, address: string, restid: string, orders: Array<string>, restname: string) {
     console.log(orders);
     orders.forEach(element => {
       console.log(element);
@@ -239,7 +285,11 @@ export class RestaurantsService {
     };
     this.http.post('http://localhost:3000/api/orders', order).subscribe(res => {
       console.log(res);
-
+      this.http.delete('http://localhost:3000/api/restaurants/cart')
+      .subscribe(response => {
+        this.cart.pop();
+        this.cartUpdated.next([...this.cart]);
+      });
     });
   }
 

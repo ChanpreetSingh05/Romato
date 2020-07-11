@@ -7,7 +7,8 @@ const userSchema = mongoose.Schema({
   isadmin: { type: Boolean, default: false },
   isrest: { type: Boolean, default: false },
   isuser: { type: Boolean, default: false },
-  restid: { type: mongoose.Schema.Types.ObjectId,ref: "Restaurants" }
+  restid: { type: mongoose.Schema.Types.ObjectId,ref: "Restaurants" },
+  name: { type: String, default: 'user' }
 });
 
 userSchema.plugin(uniqueValidator);

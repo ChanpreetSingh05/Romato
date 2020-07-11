@@ -12,15 +12,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userIsAuthenticated = false;
   private authListenerSubs: Subscription;
 
-  constructor(private authService: AuthService) {}
+  restIsAuthenticated = false;
+  private restListenerSubs: Subscription;
+
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
     this.userIsAuthenticated = this.authService.getIsAuth();
+    this.restIsAuthenticated = this.authService.getRest();
     this.authListenerSubs = this.authService
       .getAuthStatusListener()
       .subscribe(isAuthenticated => {
         this.userIsAuthenticated = isAuthenticated;
       });
+    this.restListenerSubs = this.authService.getRestListener().subscribe(isAdmin => {
+      this.restIsAuthenticated = isAdmin;
+    });
   }
 
   onLogout() {
@@ -29,5 +36,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.authListenerSubs.unsubscribe();
+    this.restListenerSubs.unsubscribe();
   }
 }
