@@ -12,10 +12,10 @@ import { CartModel } from './cart.model';
 export class RestaurantsService {
   private restaurants: RestaurantModel[] = [];
   private menus: any[] = [];
+  private additional: Array<string> = [];
   private restaurantsUpdated = new Subject<RestaurantModel[]>();
   private menusUpdated = new Subject<any[]>();
   private parentID = '';
-  // private prev_rest_id = '';
   cart: any[] = [];
   private cartUpdated = new Subject<CartModel[]>();
   order: any[] = [];
@@ -38,38 +38,67 @@ export class RestaurantsService {
 
 
   // To be Done
-  postRest(name: string,
-           cuisine: string,
-           contact: string,
-           street: string,
-           house: string,
-           city: string,
-           postal: string,
+  postRest(name: string, email: string, cuisine: string, contact: string, street: string, house: string, city: string, postal: string,
            province: string,
            cost: string,
-           OpeningStatus: string,
            Alcohol: string,
            dinein: string,
-           breakfast: string,
-           lunch: string,
-           dinner: string,
-           cafe: string,
-           nightlife: string,
-           indoorseating: string,
-           outdoorseating: string,
+           breakfast: boolean,
+           lunch: boolean,
+           dinner: boolean,
+           cafe: boolean,
+           nightlife: boolean,
+           indoorseating: boolean,
+           outdoorseating: boolean,
            wifi: string,
            parking: string,
            image: File,
            cover: File) {
-    const Data = new FormData();
-    Data.append('name', name);
-    Data.append('image', image, 'image');
-    Data.append('cost', cost);
-    this.http
-      .post('http://localhost:3000/api/menu/brkfast', Data)
-      .subscribe(response => {
-        console.log(response);
-      });
+
+    this.additional.push(Alcohol);
+    this.additional.push(dinein);
+    this.additional.push(wifi);
+    this.additional.push(parking);
+    if (breakfast === true) {
+      this.additional.push('Breakfast');
+    }
+    if (lunch === true) {
+      this.additional.push('Lunch');
+    }
+    if (dinner === true) {
+      this.additional.push('Dinner');
+    }
+    if (cafe === true) {
+      this.additional.push('Cafe');
+    }
+    if (nightlife === true) {
+      this.additional.push('Night Life');
+    }
+    if (indoorseating === true) {
+      this.additional.push('Indoor Seating');
+    }
+    if (outdoorseating === true) {
+      this.additional.push('Outdoor Seating');
+    }
+
+    let resData: any|FormData;
+    resData = new FormData();
+    resData.append('name', name);
+    resData.append('image', image, 'image');
+    resData.append('email', email);
+    resData.append('cover', cover, 'cover');
+    resData.append('cuisine', cuisine);
+    resData.append('contact', contact);
+    resData.append('street', street);
+    resData.append('house', house);
+    resData.append('city', city);
+    resData.append('postal', postal);
+    resData.append('province', province);
+    resData.append('cost', cost);
+    resData.append('additional', this.additional);
+    this.http.post('http://localhost:3000/api/restaurants', resData).subscribe(response => {
+      console.log(response);
+    });
   }
 
 
@@ -82,6 +111,7 @@ export class RestaurantsService {
         return restaurantData.restaurant.map((restaurant) => {
           return {
             name: restaurant.name,
+            email: restaurant.email,
             contact: restaurant.contact,
             cuisines: restaurant.cuisines,
             house_no: restaurant.house_no,
@@ -116,14 +146,14 @@ export class RestaurantsService {
 
   getrestaurantdetails(id: string) {
     // tslint:disable-next-line: max-line-length
-    return this.http.get<{ _id: string, name: string, contact: number, city: string, cuisines: string, province: string, cost: string, house_no: string, st_name: string, postal_code: string, imagePath: string,  cover: string, additional: Array<string> }>(
+    return this.http.get<{ _id: string, name: string, email: string, contact: number, city: string, cuisines: string, province: string, cost: string, house_no: string, st_name: string, postal_code: string, imagePath: string, cover: string, additional: Array<string> }>(
       'http://localhost:3000/api/restaurants/details/' + id
     );
   }
 
   getadminrestaurantdetails() {
     // tslint:disable-next-line: max-line-length
-    return this.http.get<{ _id: string, name: string, contact: number, city: string, cuisines: string, cost: string, house_no: string, st_name: string, postal_code: string, imagePath: string, additional: Array<string> }>(
+    return this.http.get<{ _id: string, name: string, email: string, contact: number, city: string, cuisines: string, cost: string, house_no: string, st_name: string, postal_code: string, imagePath: string, additional: Array<string> }>(
       'http://localhost:3000/api/restaurants/adminrestdetails'
     );
   }
@@ -265,10 +295,10 @@ export class RestaurantsService {
         this.cart.forEach((o) => {
           o.orders = o.orders.filter(s => s._id !== cartId);
         });
-      //   const updatedCarts = this.cart.order.filter(post => {
-      //     return (post.orders._id !== cartId);
-      // }
-      // );
+        //   const updatedCarts = this.cart.order.filter(post => {
+        //     return (post.orders._id !== cartId);
+        // }
+        // );
         this.cartUpdated.next([...this.cart]);
       });
   }
@@ -286,10 +316,10 @@ export class RestaurantsService {
     this.http.post('http://localhost:3000/api/orders', order).subscribe(res => {
       console.log(res);
       this.http.delete('http://localhost:3000/api/restaurants/cart')
-      .subscribe(response => {
-        this.cart.pop();
-        this.cartUpdated.next([...this.cart]);
-      });
+        .subscribe(response => {
+          this.cart.pop();
+          this.cartUpdated.next([...this.cart]);
+        });
     });
   }
 

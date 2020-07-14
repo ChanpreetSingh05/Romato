@@ -1,34 +1,72 @@
 const express = require("express");
 
-const router = express.Router();
+const multer = require("multer");
+
+const bodyParser = require("body-parser");
 
 const RestaurantModel = require("../models/RestaurantModel");
 const CartModel = require("../models/cart");
 const checkAuth = require("../middleware/check-auth");
 
-router.post("", (req, res, next) => {
-  const RestaurantMode = new RestaurantModel({
+const router = express.Router();
+
+const MIME_TYPE_MAP = {
+  "image/png": "png",
+  "image/jpeg": "jpg",
+  "image/jpg": "jpg"
+};
+
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const isValid = MIME_TYPE_MAP[file.mimetype];
+    let error = new Error("Invalid mime type");
+    if (isValid) {
+      error = null;
+    }
+    cb(error, "backend/Data/Restaurant_Photo");
+  },
+  filename: (req, file, cb) => {
+    const name = file.originalname
+      .toLowerCase()
+      .split(" ")
+      .join("-");
+    const ext = MIME_TYPE_MAP[file.mimetype];
+    cb(null, name + "-" + Date.now() + "." + ext);
+  }
+});
+
+const upload = multer({
+  storage: storage
+  // storage: storage1
+});
+
+router.post("",
+upload.fields([{ name: 'image' }, { name: 'cover' }])
+, (req, res, next) => {
+  const url = req.protocol + "://" + req.get("host");
+
+    // imagePath: url + "/Data/Review_images/" + req.file.filename,
+    const RestaurantMode = new RestaurantModel({
     name: req.body.name,
-    cuisines: req.body.cuisines,
+    status: false,
+    active_stts: "Pending",
+    // cover: 'helo',
+    email: req.body.email,
+    cuisines: req.body.cuisine,
     contact: req.body.contact,
-    house_no: req.body.house_no,
-    st_name: req.body.st_name,
+    house_no: req.body.house,
+    st_name: req.body.street,
     city: req.body.city,
     province: req.body.province,
-    postal_code: req.body.postal_code,
+    postal_code: req.body.postal,
     cost: req.body.cost,
-    breakfast: req.body.breakfast,
-    takeout: req.body.takeout,
-    alcohol: req.body.alcohol,
-    parking: req.body.parking,
-    indoor_seating: req.body.indoor_seating,
-    outdoor_seating: req.body.outdoor_seating,
-    kids: req.body.kids,
-    wifi: req.body.wifi,
-    imagePath: req.body.imagePath,
-    cover: req.body.cover,
-    status: req.body.status,
+    imagePath: url + "/Data/Restaurant_Photo/" + req.files.image[0].filename,
+    cover: url + "/Data/Restaurant_Photo/" + req.files.cover[0].filename,
+    additional: req.body.additional
   });
+  // res.status(201).json({
+  //   message: req.body.name});
   RestaurantMode.save()
     .then((result) => {
       res.status(201).json({
@@ -44,7 +82,7 @@ router.post("", (req, res, next) => {
 });
 
 router.get("", (req, res, next) => {
-  RestaurantModel.find().then((documents) => {
+  RestaurantModel.find({status: true}).then((documents) => {
     res.status(200).json({
       message: "Posts fetched Successfully",
       restaurant: documents,

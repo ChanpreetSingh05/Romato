@@ -36,8 +36,8 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'addrestaurant', component: AddrestaurantComponent },
   { path: 'addrestaurant/:ID', component: AddrestaurantComponent },
-  { path: 'cart', component: CartComponent },
-  { path: 'orders', component: OrdersComponent },
+  { path: 'cart', component: CartComponent, canActivate: [AuthGuard]  },
+  { path: 'orders', component: OrdersComponent, canActivate: [AuthGuard]  },
   {
     path: 'rest-admin', component: DashboardComponent, canActivate: [AuthGuard],
     children: [

@@ -41,6 +41,7 @@ import { ListMenuComponent } from './Admin-Restaurant/list-menu/list-menu.compon
 import { RestDetailsComponent } from './Admin-Restaurant/rest-details/rest-details.component';
 import { OrdersComponent } from './restaurants/orders/orders.component';
 import { OrdersAdminComponent } from './Admin-Restaurant/orders-admin/orders-admin.component';
+import { RequestRestaurantComponent } from './Admin/request-restaurant/request-restaurant.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { OrdersAdminComponent } from './Admin-Restaurant/orders-admin/orders-adm
     ListMenuComponent,
     RestDetailsComponent,
     OrdersComponent,
-    OrdersAdminComponent
+    OrdersAdminComponent,
+    RequestRestaurantComponent
   ],
   imports: [
     BrowserModule,

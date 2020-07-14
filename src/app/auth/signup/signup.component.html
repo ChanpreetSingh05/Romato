@@ -1,14 +1,35 @@
-<mat-card>
-  <mat-spinner *ngIf="isLoading"></mat-spinner>
-  <form (submit)="onSignup(signupForm)" #signupForm="ngForm" *ngIf="!isLoading">
-    <mat-form-field>
-      <input matInput name="email" ngModel type="email" placeholder="E-Mail" #emailInput="ngModel" required email>
-      <mat-error *ngIf="emailInput.invalid">Please enter a valid email.</mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <input type="password" name="password" ngModel matInput placeholder="Password" #passwordInput="ngModel" required>
-      <mat-error *ngIf="passwordInput.invalid">Please enter a valid password.</mat-error>
-    </mat-form-field>
-    <button mat-raised-button color="accent" type="submit" *ngIf="!isLoading">Signup</button>
-  </form>
-</mat-card>
+
+<div class="container bg w-75">
+  <div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <div class=" bg-white p-5 shadow-lg m-5">
+        <h2>Register</h2>
+        <mat-spinner *ngIf="isLoading"></mat-spinner>
+        <form (submit)="onSignup(signupForm)" #signupForm="ngForm" *ngIf="!isLoading">
+          <mat-form-field>
+            <input matInput name="name" ngModel type="name" placeholder="Name" #nameInput="ngModel" required email>
+            <mat-error *ngIf="nameInput.invalid">Please enter a valid Name.</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput name="email" ngModel type="email" placeholder="E-Mail" #emailInput="ngModel" required email>
+            <mat-error *ngIf="emailInput.invalid">Please enter a valid email.</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input type="password" name="password" ngModel matInput placeholder="Password" #passwordInput="ngModel" required>
+            <mat-error *ngIf="passwordInput.invalid">Please enter a valid password.</mat-error>
+          </mat-form-field>
+          <button  class="btn btn-secondary" type="submit" *ngIf="!isLoading">Register</button>
+        </form>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <div class="text-right text-secondary hel">
+        <h2>Already have an account?</h2>
+        <p>Lorem ipsum dolor sit amet</p>
+        <button class="btn btn-secondary">Login</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

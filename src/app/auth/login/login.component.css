@@ -5,3 +5,16 @@ mat-form-field {
 mat-spinner {
   margin: auto;
 }
+
+.bg {
+  background-color: #ED432A;
+}
+
+.row{
+  margin-top: 150px;
+}
+
+.hel{
+  margin-top: 130px;
+  margin-right: 25px;
+}

@@ -44,8 +44,6 @@ router.post(
       postID: req.body.postID,
       name: req.userData.name,
     });
-    // console.log('edt'+req.body.postID);
-    // return res.status(200).json({reviewpost});
     reviewpost.save().then(createdPost => {
       res.status(201).json({
         message: "Post added successfully",
@@ -54,6 +52,27 @@ router.post(
     });
   }
 );
+
+
+// router.post(
+//   "",
+//   checkAuth,
+//   (req, res, next) => {
+//     const url = req.protocol + "://" + req.get("host");
+//     console.log(req.body.name);
+//     const reviewpost = new ReviewPost({
+//       content: req.body.name,
+//       imagePath: '' ,
+//       creator: req.userData.userId,
+//       postID: 'req.body.email',
+//       name: req.userData.email,
+//     });
+
+//     res.status(201).json({
+//       message: reviewpost
+//     });
+//   }
+// );
 
 router.put(
   "/:id",

@@ -28,7 +28,7 @@ export class AddrestaurantComponent implements OnInit {
     night: false,
     indoor: false,
     outdoor: false,
-    alcohol: 'Non Alcohol',
+    alcohol: 'Non-Alcohol',
     wifi: 'No Wifi',
     parking: 'No Parking',
     seating: 'Take Out',
@@ -38,15 +38,16 @@ export class AddrestaurantComponent implements OnInit {
   ngOnInit() {
     this.form = new FormGroup({
       restaurantname: new FormControl(null, { validators: [Validators.required] }),
+      restaurantemail: new FormControl(null, { validators: [Validators.required, Validators.email] }),
       restaurantcuisine: new FormControl(null, { validators: [Validators.required, Validators.min(1)] }),
-      restaurantcontact: new FormControl(null, { validators: [Validators.required] }),
+      restaurantcontact: new FormControl(null, { validators: [Validators.required,
+        Validators.pattern(/^(\()?\d{3}(\))?(-|\s)?\d{3}(-|\s)\d{4}$/)] }),
       restaurantstreet: new FormControl(null, { validators: [Validators.required] }),
       restauranthouse: new FormControl(null, { validators: [Validators.required] }),
       restaurantcity: new FormControl(null, { validators: [Validators.required] }),
       restaurantpostal: new FormControl(null, { validators: [Validators.required] }),
       restaurantprovince: new FormControl(null, { validators: [Validators.required] }),
       restaurantcost: new FormControl(null, { validators: [Validators.required] }),
-      restaurantOpeningStatus: new FormControl(null),
       restaurantAlcohol: new FormControl(null),
       restaurantdinein: new FormControl(null),
       restaurantbreakfast: new FormControl(null),
@@ -78,6 +79,7 @@ export class AddrestaurantComponent implements OnInit {
           this.restaurant = {
             id: restaurantData._id,
             name: restaurantData.name,
+            email: restaurantData.email,
             contact: restaurantData.contact,
             city: restaurantData.city,
             cuisine: restaurantData.cuisines,
@@ -86,8 +88,8 @@ export class AddrestaurantComponent implements OnInit {
             st_name: restaurantData.st_name,
             postal_code: restaurantData.postal_code,
             imagePath: restaurantData.imagePath,
+            cover: restaurantData.cover,
             province: restaurantData.province,
-            open: 'true',
             additional: restaurantData.additional,
           };
           this.restaurant.additional.forEach(element => {
@@ -128,6 +130,7 @@ export class AddrestaurantComponent implements OnInit {
           });
           this.form.setValue({
             restaurantname: this.restaurant.name,
+            restaurantemail: this.restaurant.email,
             restaurantcuisine: this.restaurant.cuisine,
             restaurantcontact: this.restaurant.contact,
             restaurantstreet: this.restaurant.st_name,
@@ -136,7 +139,6 @@ export class AddrestaurantComponent implements OnInit {
             restaurantpostal: this.restaurant.postal_code,
             restaurantprovince: this.restaurant.province,
             restaurantcost: this.restaurant.cost,
-            restaurantOpeningStatus: this.restaurant.open,
             restaurantAlcohol: this.rest.alcohol,
             restaurantdinein: this.rest.seating,
             restaurantbreakfast: this.rest.breakfast,
@@ -148,8 +150,8 @@ export class AddrestaurantComponent implements OnInit {
             outdoorseating: this.rest.outdoor,
             restaurantwifi: this.rest.wifi,
             restaurantparking: this.rest.parking,
-            image: '',
-            cover: ''
+            image: this.restaurant.imagePath,
+            cover: this.restaurant.cover
           });
 
           this.btn = 'Edit Menu';
@@ -158,6 +160,31 @@ export class AddrestaurantComponent implements OnInit {
         this.restaurantId = null;
         this.mode = 'create';
         this.btn = 'Add Menu';
+        this.form.setValue({
+          restaurantname: '',
+          restaurantemail: '',
+          restaurantcuisine: '',
+          restaurantcontact: '',
+          restaurantstreet: '',
+          restauranthouse: '',
+          restaurantcity: '',
+          restaurantpostal: '',
+          restaurantprovince: '',
+          restaurantcost: '',
+          restaurantAlcohol: this.rest.alcohol,
+          restaurantdinein: this.rest.seating,
+          restaurantbreakfast: this.rest.breakfast,
+          restaurantlunch: this.rest.lunch,
+          restaurantdinner: this.rest.dinner,
+          restaurantcafe: this.rest.cafe,
+          restaurantnightlife: this.rest.night,
+          indoorseating: this.rest.indoor,
+          outdoorseating: this.rest.outdoor,
+          restaurantwifi: this.rest.wifi,
+          restaurantparking: this.rest.parking,
+          image: '',
+          cover: ''
+        });
         console.log('Invalid Data');
       }
     });
@@ -197,14 +224,34 @@ export class AddrestaurantComponent implements OnInit {
     }
     this.isLoading = true;
     if (this.mode === 'create') {
-      console.log(this.form.value.name, this.form.value.cost, this.form.value.meal, this.form.value.image);
+      this.restaurantsService.postRest(this.form.value.restaurantname,
+        this.form.value.restaurantemail,
+        this.form.value.restaurantcuisine,
+        this.form.value.restaurantcontact,
+        this.form.value.restaurantstreet,
+        this.form.value.restauranthouse,
+        this.form.value.restaurantcity,
+        this.form.value.restaurantpostal,
+        this.form.value.restaurantprovince,
+        this.form.value.restaurantcost,
+        this.form.value.restaurantAlcohol,
+        this.form.value.restaurantdinein,
+        this.form.value.restaurantbreakfast,
+        this.form.value.restaurantlunch,
+        this.form.value.restaurantdinner,
+        this.form.value.restaurantcafe,
+        this.form.value.restaurantnightlife,
+        this.form.value.indoorseating,
+        this.form.value.outdoorseating,
+        this.form.value.restaurantwifi,
+        this.form.value.restaurantparking,
+        this.form.value.image,
+        this.form.value.cover);
     } else {
-      // this.restaurantsService.postMenu();
+
       console.log(this.restaurantId, this.form.value);
     }
-    // console.log(this.arr);
-    // this.menuService.postMenu(form.value.name, form.value.cost, form.value.meal);
-    // this.form.reset();
+    this.form.reset();
     this.isLoading = false;
   }
 

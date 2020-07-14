@@ -23,6 +23,7 @@ export class RestDetailsComponent implements OnInit {
       this.restaurant = {
         id: restaurantData._id,
         name: restaurantData.name,
+        email: restaurantData.email,
         contact: restaurantData.contact,
         city: restaurantData.city,
         cuisine: restaurantData.cuisines,

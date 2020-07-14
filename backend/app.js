@@ -1,6 +1,7 @@
 const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
+const formidable = require('express-formidable');
 const mongoose = require("mongoose");
 
 const restaurantsRoutes = require("./routes/restaurants");
@@ -23,7 +24,10 @@ mongoose
     console.log("Connection Not Established..!");
   });
 
+  // app.use(formidable());
   app.use(bodyParser.json());
+  // app.use(bodyParser.urlencoded({ extended: true }));
+  // app.use(bodyParser.raw());
   app.use("/Data",express.static(path.join("backend/Data")));
 
 app.use((req, res, next) => {
