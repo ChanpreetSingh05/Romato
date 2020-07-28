@@ -42,6 +42,9 @@ import { RestDetailsComponent } from './Admin-Restaurant/rest-details/rest-detai
 import { OrdersComponent } from './restaurants/orders/orders.component';
 import { OrdersAdminComponent } from './Admin-Restaurant/orders-admin/orders-admin.component';
 import { RequestRestaurantComponent } from './Admin/request-restaurant/request-restaurant.component';
+import { RequestDetailRestaurantComponent } from './Admin/request-detail-restaurant/request-detail-restaurant.component';
+import { AssignLoginComponent } from './Admin/assign-login/assign-login.component';
+import { Page404Component } from './page404/page404.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +67,10 @@ import { RequestRestaurantComponent } from './Admin/request-restaurant/request-r
     RestDetailsComponent,
     OrdersComponent,
     OrdersAdminComponent,
-    RequestRestaurantComponent
+    RequestRestaurantComponent,
+    RequestDetailRestaurantComponent,
+    AssignLoginComponent,
+    Page404Component
   ],
   imports: [
     BrowserModule,

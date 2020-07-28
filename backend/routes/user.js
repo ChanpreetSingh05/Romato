@@ -10,7 +10,12 @@ router.post("/signup", (req, res, next) => {
   bcrypt.hash(req.body.password, 10).then(hash => {
     const ZomatoUser = new User({
       email: req.body.email,
-      password: hash
+      password: hash,
+      isadmin: false,
+      isrest: req.body.isrest,
+      isuser: req.body.isuser,
+      name: req.body.name,
+      restid: req.body.restid,
     });
     ZomatoUser
       .save()

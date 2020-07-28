@@ -3,7 +3,8 @@
 </div>
 
 <div class="container" *ngIf="userIsAuthenticated">
-  <h2 class="text-danger">Your Orders</h2>
+  <h4 class="mt-4">Your Orders</h4>
+          <hr class="accent my-2">
   <div class="coantainer" *ngFor="let item of orders">
 
 
@@ -34,6 +35,8 @@
         </tbody>
       </table>
     </mat-card>
+
+    <hr class="dark my-5 w-75 text-center">
 
   </div>
 </div>

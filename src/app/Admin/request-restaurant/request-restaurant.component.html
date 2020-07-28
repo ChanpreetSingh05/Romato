@@ -1,1 +1,109 @@
-<p>request-restaurant works!</p>
+<mat-tab-group>
+  <mat-tab label="Pending">
+    <div *ngIf="rest.length > 0 && !isLoading">
+      <div class="card w-75 shadow mx-auto my-4" *ngFor="let restaurant of rest">
+
+        <div class="car" [routerLink]="['details', restaurant.id]" >
+          <div class="row my-3">
+            <div class="col-lg-4 col-md-4 col-12 text-center">
+              <img class="rounded-circle img-thumbnail h-100" [src]="restaurant?.imagePath" [alt]="restaurant?.name" />
+            </div>
+
+            <div class="col-lg-8 col-md-8 col-12">
+              <div class="card-heading">
+                <h1 class="text-danger font-weight-bold">{{ restaurant.name }}</h1>
+                <h2>{{ restaurant.city }}</h2>
+                <p class="dull">{{ restaurant.house_no }} {{ restaurant.st_name}}, {{restaurant.city}}
+                  {{restaurant.postal_code}}</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <mat-action-row class="m-5" *ngIf="userIsAuthenticated && userisAdmin && restaurant?.active_stts == 'Pending'  ">
+          <a mat-button color="primary" (click)="onAccept(restaurant.id)">Accept</a>
+          <button mat-button color="warn" (click)="onDelete(restaurant.id)">Reject</button>
+        </mat-action-row>
+
+        <!-- <div class="gVNnqW" [ngStyle]="{ 'background-image': 'url(' + restaurant?.cover + ')'}"> -->
+        <!-- </div> -->
+
+      </div>
+
+    </div>
+
+    <div class="card my-4 mx-auto" *ngIf="rest.length <= 0 && !isLoading">
+      <div class="card-body">
+        <p class="info-text mat-body-1 text-center my-2">No Pending Restaurant Request!
+        </p>
+      </div>
+    </div>
+  </mat-tab>
+
+  <mat-tab class="text-primary" label="Accepted">
+    <div *ngIf="accept.length > 0 && !isLoading">
+      <div class="card w-75 shadow mx-auto my-4" *ngFor="let restaurant of accept"
+        [routerLink]="['/details', restaurant.id]">
+
+        <div class="gVNnqW" [ngStyle]="{ 'background-image': 'url(' + restaurant?.cover + ')'}">
+        </div>
+        <div class="row my-3">
+          <div class="col-lg-4 col-md-4 col-12 text-center">
+            <img class="rounded-circle img-thumbnail" [src]="restaurant?.imagePath" [alt]="restaurant?.name" />
+          </div>
+
+          <div class="col-lg-8 col-md-8 col-12">
+            <div class="card-heading">
+              <p class="text-muted font-weight-bold">{{ restaurant.cuisines.toUpperCase() }}</p>
+              <h1 class="text-danger font-weight-bold">{{ restaurant.name }}</h1>
+              <h2>{{ restaurant.city }}</h2>
+              <p class="dull">{{ restaurant.house_no }} {{ restaurant.st_name}}, {{restaurant.city}}
+                {{restaurant.postal_code}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card my-4 mx-auto" *ngIf="accept.length <= 0 && !isLoading">
+      <div class="card-body">
+        <p class="info-text mat-body-1 text-center my-2">No Accepted Restaurants !
+        </p>
+      </div>
+    </div>
+
+  </mat-tab>
+  <mat-tab class="text-danger" label="Declined">
+    <div *ngIf="refused.length > 0 && !isLoading">
+      <div class="card w-75 shadow mx-auto my-4" *ngFor="let restaurant of refused"
+        [routerLink]="['/details', restaurant.id]">
+
+        <div class="gVNnqW" [ngStyle]="{ 'background-image': 'url(' + restaurant?.cover + ')'}">
+        </div>
+        <div class="row my-3">
+          <div class="col-lg-4 col-md-4 col-12 text-center">
+            <img class="rounded-circle img-thumbnail" [src]="restaurant?.imagePath" [alt]="restaurant?.name" />
+          </div>
+
+          <div class="col-lg-8 col-md-8 col-12">
+            <div class="card-heading">
+              <p class="text-muted font-weight-bold">{{ restaurant.cuisines.toUpperCase() }}</p>
+              <h1 class="text-danger font-weight-bold">{{ restaurant.name }}</h1>
+              <h2>{{ restaurant.city }}</h2>
+              <p class="dull">{{ restaurant.house_no }} {{ restaurant.st_name}}, {{restaurant.city}}
+                {{restaurant.postal_code}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card my-4 mx-auto" *ngIf="refused.length <= 0 && !isLoading">
+      <div class="card-body">
+        <p class="info-text mat-body-1 text-center my-2">No Declined Restaurants !
+        </p>
+      </div>
+    </div>
+
+  </mat-tab>
+</mat-tab-group>

@@ -114,7 +114,7 @@ export class AddrestaurantComponent implements OnInit {
             if (element === 'Outdoor Seating') {
               this.rest.outdoor = true;
             }
-            if (element === 'Alcohol' || element === 'Non Alcohol') {
+            if (element === 'Alcohol' || element === 'Non-Alcohol') {
               this.rest.alcohol = element;
             }
             if (element === 'Parking' || element === 'No Parking') {
@@ -249,7 +249,6 @@ export class AddrestaurantComponent implements OnInit {
         this.form.value.cover);
     } else {
 
-      console.log(this.restaurantId, this.form.value);
     }
     this.form.reset();
     this.isLoading = false;

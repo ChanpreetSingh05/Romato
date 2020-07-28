@@ -23,8 +23,11 @@
         <div class="aboutus-banner">
           <img [src]="restaurant?.imagePath" alt="restaurant?.name" class="rounded-circle img-thumbnail">
 
-          <a class="aboutus-more text-center mt-5 mx-auto w-100"
-            [routerLink]="['../addrestaurant', restaurant?.id  || 'all' ]">Edit</a>
+          <div class="mt-5 mx-auto w-100 text-center" *ngIf="restaurant?.active_stts === 'Pending'  ">
+            <a mat-button color="primary" (click)="onAccept(restaurant.id)">Accept</a>
+            <a mat-button color="warn" (click)="onDelete(restaurant.id)">Reject</a>
+          </div>
+
         </div>
       </div>
     </div>

@@ -1,0 +1,59 @@
+<div class="container" id= "fullheight">
+  <form #createForm="ngForm" (submit)="Submit(createForm)" *ngIf="boolsel">
+      <div class="form-group">
+          <label for="email">Email ID:</label>
+          <input [ngModel]="selected?.email" class="form-control" type="email" name="email" #email="ngModel" disabled
+              required>
+      </div>
+
+      <div class="form-group">
+          <label for="pass">Assign a Password:</label>
+          <input [ngModel]="" class="form-control" id="pass" name="pass" #pass="ngModel" required>
+      </div>
+
+      <div class="checkbox">
+          <!-- <label for="admin">
+              <input [ngModel]="admin" type="checkbox" name="admin" #admin="ngModel">Is the Person Admin..?</label> -->
+      </div>
+      <button mat-raised-button color="accent" type="submit">Activate Account</button>
+  </form>
+
+  <form #assignForm="ngForm" (submit)="GetDetail(assignForm)">
+    <div class="card my-4 mx-auto">
+      <div class="card-body">
+        <mat-form-field class="w-100">
+        <mat-label>Choose Restaurant</mat-label>
+        <mat-select name="restaurant" #restaurant="ngModel" required ngModel>
+          <mat-option *ngFor="let employee of rest" [value]="employee">
+              {{employee?.name}} ({{employee?.status}})
+          </mat-option>
+      </mat-select>
+      </mat-form-field>
+        <p><button mat-raised-button color="primary" type="submit">Get Details</button></p>
+        </div>
+    </div>
+  </form>
+
+  <div class="container-fluid row mb-5" *ngIf="boolsel">
+
+      <div class="col-lg-4 col-md-4 col-12 ">
+        <p class="card-text my-4">Name : <span class="font-weight-bold"> {{selected?.name}} </span></p>
+        <p class="card-text my-4">Email : <span class="font-weight-bold"> {{selected?.email}} </span></p>
+        <p class="card-text my-4">Contact Number : <span class="font-weight-bold"> {{selected?.contact}} </span></p>
+        <p class="card-text my-4">City : <span class="font-weight-bold"> {{selected?.city}} </span></p>
+
+      </div>
+
+      <div class="col-lg-4 col-md-4 col-12 ">
+        <p class="card-text my-4">Cuisines : <span class="font-weight-bold"> {{selected?.cuisines}} </span></p>
+        <p class="card-text my-4">Cost : <span class="font-weight-bold"> {{selected?.cost}} </span></p>
+        <p class="card-text my-4">Address : <span class="font-weight-bold"> {{selected?.house_no}}, {{selected?.st_name}}, {{selected?.province}} </span></p>
+        <p class="card-text my-4">Postal Code : <span class="font-weight-bold"> {{selected?.postal_code}} </span></p>
+      </div>
+
+      <div class="col-lg-4 col-md-4 col-12 ">
+        <img [src]="selected?.imagePath" alt="selected?.name" class="rounded-circle img-thumbnail">
+      </div>
+
+  </div>
+</div>

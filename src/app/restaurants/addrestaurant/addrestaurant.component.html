@@ -1,7 +1,7 @@
 <div class="container py-2 px-4" id="fullheight">
 
-  <h1>Employee</h1>
-  <hr>
+  <h4 class="mt-4">Request Restaurant</h4>
+          <hr class="accent my-2">
   <div class="container">
     <mat-card>
       <mat-spinner *ngIf="isLoading"></mat-spinner>
@@ -86,7 +86,7 @@
           <mat-radio-button value="false">Opening Soon</mat-radio-button>
         </mat-radio-group> -->
 
-        <h1>Additional Services</h1>
+        <h4>Additional Services</h4>
 
         <label id="alcohol">Alcohol</label>
         <mat-radio-group aria-label="alcohol" formControlName="restaurantAlcohol">
@@ -135,7 +135,7 @@
             <mat-radio-button value="No Parking">No</mat-radio-button>
           </mat-radio-group>
 
-        <button mat-raised-button color="accent" type="submit">Login</button>
+        <button mat-raised-button color="accent" type="submit">Submit Request</button>
       </form>
     </mat-card>
 

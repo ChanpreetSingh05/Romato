@@ -61,9 +61,12 @@
     </div>
 
 
+    <div *ngIf="userIsAuthenticated">
+
     <h6 class="mt-5">Add Reviews</h6>
     <hr class="mb-4">
-    <app-review-create></app-review-create>
+      <app-review-create></app-review-create>
+    </div>
 
     <h6 class="mt-5">Reviews</h6>
     <hr class="mb-4">

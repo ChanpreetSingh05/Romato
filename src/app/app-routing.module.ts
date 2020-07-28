@@ -17,6 +17,10 @@ import { RestDetailsComponent } from './Admin-Restaurant/rest-details/rest-detai
 import { RestaurantMenuComponent } from './restaurants/restaurant-menu/restaurant-menu.component';
 import { OrdersComponent } from './restaurants/orders/orders.component';
 import { OrdersAdminComponent } from './Admin-Restaurant/orders-admin/orders-admin.component';
+import { RequestRestaurantComponent } from './Admin/request-restaurant/request-restaurant.component';
+import { RequestDetailRestaurantComponent } from './Admin/request-detail-restaurant/request-detail-restaurant.component';
+import { AssignLoginComponent } from './Admin/assign-login/assign-login.component';
+import { Page404Component } from './page404/page404.component';
 
 
 const routes: Routes = [
@@ -51,9 +55,12 @@ const routes: Routes = [
   {
     path: 'admin', component: DashboardComponent, canActivate: [AuthGuard],
     children: [
-      { path: '', component: RestaurantListComponent },
+      { path: '', component: RequestRestaurantComponent },
+      {path: 'details/:ID', component: RequestDetailRestaurantComponent },
+      {path: 'assign', component: AssignLoginComponent }
     ]
-  }
+  },
+  { path: '**' , component: Page404Component}
 ];
 
 @NgModule({

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 
 import { AuthData } from './auth-data.model';
+import { RestaurantsService } from '../restaurants/restaurant.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -21,7 +22,7 @@ export class AuthService {
   private boolrest = false;
   private Stringrest: string;
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private rest: RestaurantsService) { }
 
   getToken() {
     return this.token;
@@ -55,19 +56,33 @@ export class AuthService {
     return this.boolrest;
   }
 
-  createUser(email: string, password: string) {
-    // tslint:disable-next-line: object-literal-shorthand
-    const authData: AuthData = { email: email, password: password };
-    this.http
+  createUser(email: string, password: string, id: string , isrest: boolean, isuser: boolean, name: string) {
+
+    if (isrest === true && isuser === false ) {
+      // tslint:disable-next-line: object-literal-shorthand
+      const authData: AuthData = { email: email, password: password, restid: id, isrest: isrest, isuser: isuser, name: name };
+      const menudata = {restid: id, name };
+      this.http
+        .post('http://localhost:3000/api/user/signup', authData)
+        .subscribe(response => {
+          this.http.post('http://localhost:3000/api/menu', menudata).subscribe(res => {
+              this.rest.updateRestAccount(id, true );
+          });
+        });
+    } else if (isrest === false && isuser === true ) {
+      // tslint:disable-next-line: object-literal-shorthand
+      const authData: AuthData = { email: email, password: password, restid: null , isrest: isrest, isuser: isuser, name: name };
+      this.http
       .post('http://localhost:3000/api/user/signup', authData)
       .subscribe(response => {
         console.log(response);
       });
+    }
   }
 
   login(email: string, password: string) {
     // tslint:disable-next-line: object-literal-shorthand
-    const authData: AuthData = { email: email, password: password };
+    const authData: any = { email: email, password: password };
     this.http
       .post<{ token: string; expiresIn: number; userId: string; isadmin: boolean ; isrest: boolean; isuser: boolean; restid: string }>(
         'http://localhost:3000/api/user/login',

@@ -1,20 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RestaurantModel } from '../restaurant.model';
 import { Subscription } from 'rxjs';
 import { RestaurantsService } from '../restaurant.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-restaurant-details',
   templateUrl: './restaurant-details.component.html',
   styleUrls: ['./restaurant-details.component.css']
 })
-export class RestaurantDetailsComponent implements OnInit {
+export class RestaurantDetailsComponent implements OnInit, OnDestroy {
   public restaurantId: string;
   restaurant: any;
   isLoading = false;
   edited = false;
-  constructor(public restaurantsService: RestaurantsService, public route: ActivatedRoute, public router: Router) { }
+  userIsAuthenticated = false;
+  userId: string;
+  private authStatusSub: Subscription;
+
+  // tslint:disable-next-line: max-line-length
+  constructor(public restaurantsService: RestaurantsService, public route: ActivatedRoute, public router: Router, private authService: AuthService ) { }
+
+  ngOnDestroy(): void {
+    this.authStatusSub.unsubscribe();
+  }
 
   ngOnInit() {
     this.isLoading = true;
@@ -43,6 +53,12 @@ export class RestaurantDetailsComponent implements OnInit {
           console.log(this.restaurant.city);
         });
         console.log('hi' + this.restaurantId);
+        this.userIsAuthenticated = this.authService.getIsAuth();
+        this.authStatusSub = this.authService
+          .getAuthStatusListener()
+          .subscribe(isAuthenticated => {
+            this.userIsAuthenticated = isAuthenticated;
+          });
       } else {
         this.restaurantId = null;
         console.log('Invalid Data');

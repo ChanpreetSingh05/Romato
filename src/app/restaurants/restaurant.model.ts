@@ -1,5 +1,6 @@
 export interface RestaurantModel {
   id: string;
+  email: string;
   contact: number;
   name: string;
   cuisines: string;
@@ -9,14 +10,9 @@ export interface RestaurantModel {
   province: string;
   postal_code: string;
   cost: string;
-  breakfast: boolean;
-  takeout: boolean;
-  alcohol: boolean;
-  parking: boolean;
-  indoor_seating: boolean;
-  outdoor_seating: boolean;
-  kids: boolean;
-  wifi: boolean;
   imagePath: string;
   cover: string;
+  status: boolean;
+  active_stts: string;
+  additional: Array<string>;
 }

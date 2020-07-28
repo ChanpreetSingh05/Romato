@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { RestaurantsService } from '../restaurant.service';
 import { AuthService } from 'src/app/auth/auth.service';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-restaurant-menu',
@@ -12,6 +13,7 @@ export class RestaurantMenuComponent implements OnDestroy, OnInit {
   menus: any[] = [];
   restid: string;
   items: number;
+  restitems: number;
   isLoading = false;
   private cartSub: Subscription;
   private menuSub: Subscription;
@@ -20,15 +22,21 @@ export class RestaurantMenuComponent implements OnDestroy, OnInit {
   userId: string;
   private authStatusSub: Subscription;
   item: any[];
+  restitem: any[];
 
   constructor(public restaurantService: RestaurantsService,
     // tslint:disable-next-line: align
-    private authService: AuthService) { }
+    private authService: AuthService,
+              public route: ActivatedRoute) { }
 
   ngOnInit(): void {
     // this.posts = this.postsService.getPosts();
     this.isLoading = true;
-    this.restaurantService.getRestaurantsMenu();
+    this.route.params.subscribe((params: Params) => {
+      // tslint:disable-next-line: no-string-literal
+      this.parentID = params['ID'];
+    });
+    this.restaurantService.getUserRestaurantsMenu(this.parentID);
     this.menuSub = this.restaurantService.getMenuUpdateListener()
       .subscribe((menu) => {
         this.menus = menu;
@@ -50,6 +58,11 @@ export class RestaurantMenuComponent implements OnDestroy, OnInit {
       .subscribe(cart => {
         this.item = cart;
         this.items = cart.length;
+        this.restitem = cart.filter(res => {
+          return res.restid.match(this.parentID);
+        });
+        this.restitems = this.restitem.length;
+        // console.log('cardt' + this.items);
       });
   }
 
@@ -61,15 +74,8 @@ export class RestaurantMenuComponent implements OnDestroy, OnInit {
 
   addCart(itemid, name, cost, restname) {
     // this.router.navigate(['create'], { relativeTo: this.route });
-    // console.log(this.authService.getUserId());
-    console.log(this.item);
     // tslint:disable-next-line: prefer-for-of
-    if (this.parentID === this.restid) {
-      console.log('differ');
-    } else {
-      console.log(this.items);
-      this.restaurantService.addCart(itemid, name, cost, this.parentID, this.userId, restname, this.items);
-    }
+    this.restaurantService.addCart(itemid, name, cost, this.parentID, this.userId, restname, this.items, this.restitems);
   }
 
 }

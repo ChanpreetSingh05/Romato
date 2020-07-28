@@ -7,7 +7,7 @@
         <mat-spinner *ngIf="isLoading"></mat-spinner>
         <form (submit)="onSignup(signupForm)" #signupForm="ngForm" *ngIf="!isLoading">
           <mat-form-field>
-            <input matInput name="name" ngModel type="name" placeholder="Name" #nameInput="ngModel" required email>
+            <input matInput name="name" ngModel type="name" placeholder="Name" #nameInput="ngModel" required>
             <mat-error *ngIf="nameInput.invalid">Please enter a valid Name.</mat-error>
           </mat-form-field>
           <mat-form-field>

@@ -33,7 +33,7 @@ export class MenuService {
         .post('http://localhost:3000/api/menu/brkfast', Data)
         .subscribe(response => {
           console.log(response);
-          this.router.navigate(['./menu']);
+          this.router.navigate(['/rest-admin/menu']);
         });
     } else if (meal === 'Lunch') {
       // 5ed6e8e672ae430bf4e55230
@@ -41,7 +41,7 @@ export class MenuService {
         .post('http://localhost:3000/api/menu/lunch', Data)
         .subscribe(response => {
           console.log(response);
-          this.router.navigate(['./menu']);
+          this.router.navigate(['menu']);
         });
     } else if (meal === 'Dinner') {
       // 5ed6e8e672ae430bf4e55230
@@ -49,7 +49,7 @@ export class MenuService {
         .post('http://localhost:3000/api/menu/dinner', Data)
         .subscribe(response => {
           console.log(response);
-          this.router.navigate(['./menu']);
+          this.router.navigate(['menu']);
         });
     }
   }
@@ -76,21 +76,21 @@ export class MenuService {
         .put('http://localhost:3000/api/menu/brkfastupdate', Data)
         .subscribe(response => {
           console.log(response);
-          this.router.navigate(['./menu']);
+          this.router.navigate(['/rest-admin/menu']);
         });
     } else if (meal === 'Lunch') {
       this.http
         .put('http://localhost:3000/api/menu/lunchupdate', Data)
         .subscribe(response => {
           console.log(response);
-          this.router.navigate(['./menu']);
+          this.router.navigate(['/rest-admin/menu']);
         });
     } else if (meal === 'Dinner') {
       this.http
         .put('http://localhost:3000/api/menu/dinnerupdate', Data)
         .subscribe(response => {
           console.log(response);
-          this.router.navigate(['./menu']);
+          this.router.navigate(['/rest-admin/menu']);
         });
     }
   }

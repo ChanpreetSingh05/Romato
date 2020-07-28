@@ -31,8 +31,8 @@ const storage = multer.diskStorage({
 
 router.post("", (req, res, next) => {
   const RestaurantMenuMode = new RestaurantMenuModel({
-    restid: "5ed6e8e672ae430bf4e55230",
-    restname: "The Early Bird",
+    restid: req.body.restid,
+    restname: req.body.name,
   });
   RestaurantMenuMode.save()
     .then((result) => {
@@ -238,7 +238,16 @@ multer({ storage: storage }).single("image"),
 });
 
 router.get("", checkAuth, (req, res, next) => {
-  RestaurantMenuModel.find().then((documents) => {
+  RestaurantMenuModel.find({ restid: req.userData.restId }).then((documents) => {
+    res.status(200).json({
+      message: "Posts fetched Successfully",
+      menu: documents,
+    });
+  });
+});
+
+router.get("/:id", checkAuth, (req, res, next) => {
+  RestaurantMenuModel.find({ restid: req.params.id }).then((documents) => {
     res.status(200).json({
       message: "Posts fetched Successfully",
       menu: documents,

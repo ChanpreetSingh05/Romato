@@ -63,7 +63,7 @@ upload.fields([{ name: 'image' }, { name: 'cover' }])
     cost: req.body.cost,
     imagePath: url + "/Data/Restaurant_Photo/" + req.files.image[0].filename,
     cover: url + "/Data/Restaurant_Photo/" + req.files.cover[0].filename,
-    additional: req.body.additional
+    additional: req.body.additional.split(','),
   });
   // res.status(201).json({
   //   message: req.body.name});
@@ -82,7 +82,26 @@ upload.fields([{ name: 'image' }, { name: 'cover' }])
 });
 
 router.get("", (req, res, next) => {
-  RestaurantModel.find({status: true}).then((documents) => {
+  RestaurantModel.find({status: true, active_stts: 'Accepted'}).then((documents) => {
+    res.status(200).json({
+      message: "Posts fetched Successfully",
+      restaurant: documents,
+    });
+  });
+});
+
+
+router.get("/admin", (req, res, next) => {
+  RestaurantModel.find().then((documents) => {
+    res.status(200).json({
+      message: "Posts fetched Successfully",
+      restaurant: documents,
+    });
+  });
+});
+
+router.get("/admin/login", (req, res, next) => {
+  RestaurantModel.find({active_stts: 'Accepted'}).then((documents) => {
     res.status(200).json({
       message: "Posts fetched Successfully",
       restaurant: documents,
@@ -98,6 +117,34 @@ router.get("/adminrestdetails", checkAuth, (req, res, next) => {
       res.status(404).json({ message: "Restaurant Not found!" });
     }
   });
+});
+
+router.put("/admin", checkAuth, (req, res, next) => {
+  // var myquery = { address: "Valley 345" };
+  var newvalues = { $set: { active_stts: req.body.status } };
+  RestaurantModel.updateOne({ _id: req.body.id }, newvalues).then(
+    (result) => {
+      if (result.n > 0) {
+        res.status(200).json({ message: "Update successful!" });
+      } else {
+        res.status(401).json({ message: "Not Authorized !" });
+      }
+    }
+  );
+});
+
+router.put("/admin/account", checkAuth, (req, res, next) => {
+  // var myquery = { address: "Valley 345" };
+  var newvalues = { $set: { status: req.body.status } };
+  RestaurantModel.updateOne({ _id: req.body.id }, newvalues).then(
+    (result) => {
+      if (result.n > 0) {
+        res.status(200).json({ message: "Update successful!" });
+      } else {
+        res.status(401).json({ message: "Not Authorized !" });
+      }
+    }
+  );
 });
 
 //For Refresh Fetching

@@ -11,9 +11,11 @@ import { CartModel } from './cart.model';
 })
 export class RestaurantsService {
   private restaurants: RestaurantModel[] = [];
+  private pendingrestaurants: RestaurantModel[] = [];
   private menus: any[] = [];
   private additional: Array<string> = [];
   private restaurantsUpdated = new Subject<RestaurantModel[]>();
+  private pendingrestaurantsUpdated = new Subject<RestaurantModel[]>();
   private menusUpdated = new Subject<any[]>();
   private parentID = '';
   cart: any[] = [];
@@ -35,7 +37,6 @@ export class RestaurantsService {
       return;
     }
   }
-
 
   // To be Done
   postRest(name: string, email: string, cuisine: string, contact: string, street: string, house: string, city: string, postal: string,
@@ -81,7 +82,7 @@ export class RestaurantsService {
       this.additional.push('Outdoor Seating');
     }
 
-    let resData: any|FormData;
+    let resData: any | FormData;
     resData = new FormData();
     resData.append('name', name);
     resData.append('image', image, 'image');
@@ -120,14 +121,6 @@ export class RestaurantsService {
             province: restaurant.province,
             postal_code: restaurant.postal_code,
             cost: restaurant.cost,
-            breakfast: restaurant.breakfast,
-            takeout: restaurant.takeout,
-            alcohol: restaurant.alcohol,
-            parking: restaurant.parking,
-            indoor_seating: restaurant.indoor_seating,
-            outdoor_seating: restaurant.outdoor_seating,
-            kids: restaurant.kids,
-            wifi: restaurant.wifi,
             imagePath: restaurant.imagePath,
             cover: restaurant.cover,
             id: restaurant._id
@@ -146,20 +139,106 @@ export class RestaurantsService {
 
   getrestaurantdetails(id: string) {
     // tslint:disable-next-line: max-line-length
-    return this.http.get<{ _id: string, name: string, email: string, contact: number, city: string, cuisines: string, province: string, cost: string, house_no: string, st_name: string, postal_code: string, imagePath: string, cover: string, additional: Array<string> }>(
+    return this.http.get<{ _id: string, name: string, email: string, contact: number, city: string, cuisines: string, province: string, cost: string, house_no: string, st_name: string, postal_code: string, imagePath: string, cover: string, additional: Array<string>, status: boolean, active_stts: string }>(
       'http://localhost:3000/api/restaurants/details/' + id
     );
   }
 
   getadminrestaurantdetails() {
     // tslint:disable-next-line: max-line-length
-    return this.http.get<{ _id: string, name: string, email: string, contact: number, city: string, cuisines: string, cost: string, house_no: string, st_name: string, postal_code: string, imagePath: string, additional: Array<string> }>(
+    return this.http.get<{ _id: string, name: string, email: string, contact: number, city: string, cuisines: string, cost: string, house_no: string, st_name: string, postal_code: string, imagePath: string, cover: string, additional: Array<string> }>(
       'http://localhost:3000/api/restaurants/adminrestdetails'
     );
   }
 
+  getPendingRestaurants() {
+    // return [...this.posts];
+    this.http.get<{ message: string, restaurant: any }>(
+      'http://localhost:3000/api/restaurants/admin'
+    )
+      .pipe(map((restaurantData) => {
+        return restaurantData.restaurant.map((restaurant) => {
+          return {
+            name: restaurant.name,
+            email: restaurant.email,
+            contact: restaurant.contact,
+            cuisines: restaurant.cuisines,
+            house_no: restaurant.house_no,
+            st_Name: restaurant.st_name,
+            city: restaurant.city,
+            province: restaurant.province,
+            postal_code: restaurant.postal_code,
+            cost: restaurant.cost,
+            imagePath: restaurant.imagePath,
+            cover: restaurant.cover,
+            id: restaurant._id,
+            additional: restaurant.additional,
+            status: restaurant.status,
+            active_stts: restaurant.active_stts
+          };
+        });
+      }))
+      .subscribe(TransformedData => {
+        this.pendingrestaurants = TransformedData;
+        this.pendingrestaurantsUpdated.next([...this.pendingrestaurants]);
+      });
+  }
+
+  getPendingRestaurantUpdateListener() {
+    return this.pendingrestaurantsUpdated.asObservable();
+  }
+
+  updateRestaurant(id: string, status: string) {
+    // tslint:disable-next-line: object-literal-shorthand
+    const update = { id: id, status: status };
+    this.http
+      .put('http://localhost:3000/api/restaurants/admin', update)
+      .subscribe(response => {
+        this.pendingrestaurants.find(item => item.id === update.id).active_stts = update.status;
+        this.pendingrestaurantsUpdated.next([...this.pendingrestaurants]);
+      });
+  }
+
+  updateRestAccount(id: string, status: boolean) {
+    // tslint:disable-next-line: object-literal-shorthand
+    const update = { id: id, status: status };
+    this.http
+      .put('http://localhost:3000/api/restaurants/admin/account', update)
+      .subscribe(response => {
+        this.pendingrestaurants.find(item => item.id === update.id).status = update.status;
+        this.pendingrestaurantsUpdated.next([...this.pendingrestaurants]);
+      });
+  }
+
+  getUserRestaurantsMenu(id: string) {
+    // return [...this.posts];
+
+    this.http.get<{ message: string, menu: any }>(
+      'http://localhost:3000/api/menu/' + id
+    )
+      .pipe(map((MenuData) => {
+        return MenuData.menu.map((menu) => {
+          // console.log('service' + menu.restaurantID);
+          return {
+            breakfast: menu.breakfast,
+            lunch: menu.lunch,
+            dinner: menu.dinner,
+            id: menu._id,
+            restaurant: menu.restid,
+            restname: menu.restname
+          };
+
+        });
+      }))
+      .subscribe(TransformedData => {
+        this.menus = TransformedData;
+        this.menusUpdated.next([...this.menus]);
+      });
+  }
+
   getRestaurantsMenu() {
     // return [...this.posts];
+
     this.http.get<{ message: string, menu: any }>(
       'http://localhost:3000/api/menu'
     )
@@ -221,16 +300,29 @@ export class RestaurantsService {
     }
   }
 
-  addCart(itemid: string, name: string, cost: number, restid: string, userid: string, restname: string, items: number) {
-    console.log('while add' + items);
+  addCart(itemid: string, name: string, cost: number, restid: string, userid: string, restname: string, items: number, restitems: number) {
+    // console.log('while add' + items);
 
     if (items > 0) {
       const cartData = { itemid, name, cost, restid, userid, restname };
-      console.log('updating');
-      this.http.put('http://localhost:3000/api/restaurants/updatecart', cartData)
-        .subscribe(response => {
-          console.log(response);
-        });
+      if (restitems > 0) {
+        console.log('updating');
+        this.http.put('http://localhost:3000/api/restaurants/updatecart', cartData)
+          .subscribe(response => {
+            console.log(response);
+            this.router.navigate(['/cart']);
+          });
+      } else {
+        this.http.delete('http://localhost:3000/api/restaurants/cart')
+          .subscribe(() => {
+            this.http
+              .post('http://localhost:3000/api/restaurants/cart', cartData)
+              .subscribe(response => {
+                console.log(response);
+                this.router.navigate(['/cart']);
+              });
+          });
+      }
     } else {
       const cartData = { itemid, name, cost, restid, userid, restname };
       console.log('adding');
@@ -238,22 +330,9 @@ export class RestaurantsService {
         .post('http://localhost:3000/api/restaurants/cart', cartData)
         .subscribe(response => {
           console.log(response);
-          // this.router.navigate(['./menu']);
+          this.router.navigate(['/cart']);
         });
     }
-  }
-
-  updateCart(itemid: string, name: string, cost: number, restid: string, userid: string, restname: string) {
-    const cartData = { itemid, name, cost, restid, userid, restname };
-    this.http.delete('http://localhost:3000/api/restaurants/updatecart')
-      .subscribe(response => {
-        console.log(response);
-        this.http
-          .post('http://localhost:3000/api/restaurants/cart', cartData)
-          .subscribe(res => {
-            console.log(res);
-          });
-      });
   }
 
   getcart() {
