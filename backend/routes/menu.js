@@ -267,10 +267,6 @@ router.get("", checkAuth, (req, res, next) => {
       message: "Posts fetched Successfully",
       menu: documents,
     });
-  }).catch((err) => {
-    res.status(500).json({
-      message: err,
-    });
   });
 });
 
@@ -279,10 +275,6 @@ router.get("/:id", checkAuth, (req, res, next) => {
     res.status(200).json({
       message: "Posts fetched Successfully",
       menu: documents,
-    });
-  }) .catch((err) => {
-    res.status(500).json({
-      message: err,
     });
   });
 });

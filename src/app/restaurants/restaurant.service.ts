@@ -6,6 +6,10 @@ import { RestaurantModel } from './restaurant.model';
 import { Subject, Subscription } from 'rxjs';
 import { CartModel } from './cart.model';
 
+import { environment } from '../../environments/environment';
+
+const BACKEND_URL = environment.apiUrl;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -97,7 +101,7 @@ export class RestaurantsService {
     resData.append('province', province);
     resData.append('cost', cost);
     resData.append('additional', this.additional);
-    this.http.post('http://localhost:3000/api/restaurants', resData).subscribe(response => {
+    this.http.post(BACKEND_URL + '/restaurants', resData).subscribe(response => {
       console.log(response);
       this.router.navigate(['/']);
     });
@@ -107,7 +111,7 @@ export class RestaurantsService {
   getRestaurants() {
     // return [...this.posts];
     this.http.get<{ message: string, restaurant: any }>(
-      'http://localhost:3000/api/restaurants'
+      BACKEND_URL + '/restaurants'
     )
       .pipe(map((restaurantData) => {
         return restaurantData.restaurant.map((restaurant) => {
@@ -141,21 +145,21 @@ export class RestaurantsService {
   getrestaurantdetails(id: string) {
     // tslint:disable-next-line: max-line-length
     return this.http.get<{ _id: string, name: string, email: string, contact: number, city: string, cuisines: string, province: string, cost: string, house_no: string, st_name: string, postal_code: string, imagePath: string, cover: string, additional: Array<string>, status: boolean, active_stts: string }>(
-      'http://localhost:3000/api/restaurants/details/' + id
+      BACKEND_URL + '/restaurants/details/' + id
     );
   }
 
   getadminrestaurantdetails() {
     // tslint:disable-next-line: max-line-length
     return this.http.get<{ _id: string, name: string, email: string, contact: number, city: string, cuisines: string, cost: string, house_no: string, st_name: string, postal_code: string, imagePath: string, cover: string, additional: Array<string> }>(
-      'http://localhost:3000/api/restaurants/adminrestdetails'
+      BACKEND_URL + '/restaurants/adminrestdetails'
     );
   }
 
   getPendingRestaurants() {
     // return [...this.posts];
     this.http.get<{ message: string, restaurant: any }>(
-      'http://localhost:3000/api/restaurants/admin'
+      BACKEND_URL + '/restaurants/admin'
     )
       .pipe(map((restaurantData) => {
         return restaurantData.restaurant.map((restaurant) => {
@@ -193,7 +197,7 @@ export class RestaurantsService {
     // tslint:disable-next-line: object-literal-shorthand
     const update = { id: id, status: status };
     this.http
-      .put('http://localhost:3000/api/restaurants/admin', update)
+      .put(BACKEND_URL + '/restaurants/admin', update)
       .subscribe(response => {
         this.pendingrestaurants.find(item => item.id === update.id).active_stts = update.status;
         this.pendingrestaurantsUpdated.next([...this.pendingrestaurants]);
@@ -204,7 +208,7 @@ export class RestaurantsService {
     // tslint:disable-next-line: object-literal-shorthand
     const update = { id: id, status: status };
     this.http
-      .put('http://localhost:3000/api/restaurants/admin/account', update)
+      .put(BACKEND_URL + '/restaurants/admin/account', update)
       .subscribe(response => {
         this.pendingrestaurants.find(item => item.id === update.id).status = update.status;
         this.pendingrestaurantsUpdated.next([...this.pendingrestaurants]);
@@ -215,7 +219,7 @@ export class RestaurantsService {
     // return [...this.posts];
 
     this.http.get<{ message: string, menu: any }>(
-      'http://localhost:3000/api/menu/' + id
+      BACKEND_URL + '/menu/' + id
     )
       .pipe(map((MenuData) => {
         return MenuData.menu.map((menu) => {
@@ -241,7 +245,7 @@ export class RestaurantsService {
     // return [...this.posts];
 
     this.http.get<{ message: string, menu: any }>(
-      'http://localhost:3000/api/menu'
+      BACKEND_URL + '/menu'
     )
       .pipe(map((MenuData) => {
         return MenuData.menu.map((menu) => {
@@ -273,7 +277,7 @@ export class RestaurantsService {
     };
     // return [...this.posts];
     if (type === 'breakfast') {
-      this.http.put('http://localhost:3000/api/menu/brkfastdelete', Data)
+      this.http.put(BACKEND_URL + '/menu/brkfastdelete', Data)
         .subscribe(() => {
           this.menus.forEach((o) => {
             o.breakfast = o.breakfast.filter(s => s._id !== id);
@@ -282,7 +286,7 @@ export class RestaurantsService {
           // this.router.navigate(['employeelist']);
         });
     } else if (type === 'lunch') {
-      this.http.put('http://localhost:3000/api/menu/lunchdelete', Data)
+      this.http.put(BACKEND_URL + '/menu/lunchdelete', Data)
         .subscribe(() => {
           this.menus.forEach((o) => {
             o.lunch = o.lunch.filter(s => s._id !== id);
@@ -290,7 +294,7 @@ export class RestaurantsService {
           this.menusUpdated.next([...this.menus]);
         });
     } else if (type === 'dinner') {
-      this.http.put('http://localhost:3000/api/menu/dinnerdelete', Data)
+      this.http.put(BACKEND_URL + '/menu/dinnerdelete', Data)
         .subscribe(() => {
           this.menus.forEach((o) => {
             o.dinner = o.dinner.filter(s => s._id !== id);
@@ -308,16 +312,16 @@ export class RestaurantsService {
       const cartData = { itemid, name, cost, restid, userid, restname };
       if (restitems > 0) {
         console.log('updating');
-        this.http.put('http://localhost:3000/api/restaurants/updatecart', cartData)
+        this.http.put(BACKEND_URL + '/restaurants/updatecart', cartData)
           .subscribe(response => {
             console.log(response);
             this.router.navigate(['/cart']);
           });
       } else {
-        this.http.delete('http://localhost:3000/api/restaurants/cart')
+        this.http.delete(BACKEND_URL + '/restaurants/cart')
           .subscribe(() => {
             this.http
-              .post('http://localhost:3000/api/restaurants/cart', cartData)
+              .post(BACKEND_URL + '/restaurants/cart', cartData)
               .subscribe(response => {
                 console.log(response);
                 this.router.navigate(['/cart']);
@@ -328,7 +332,7 @@ export class RestaurantsService {
       const cartData = { itemid, name, cost, restid, userid, restname };
       console.log('adding');
       this.http
-        .post('http://localhost:3000/api/restaurants/cart', cartData)
+        .post(BACKEND_URL + '/restaurants/cart', cartData)
         .subscribe(response => {
           console.log(response);
           this.router.navigate(['/cart']);
@@ -339,7 +343,7 @@ export class RestaurantsService {
   getcart() {
     // return [...this.cart];
     this.http.get<{ message: string, cart: any }>(
-      'http://localhost:3000/api/restaurants/cart'
+      BACKEND_URL + '/restaurants/cart'
     )
       .pipe(map((cartData) => {
         return cartData.cart.map((cart) => {
@@ -365,12 +369,12 @@ export class RestaurantsService {
   // getcartdetail() {
   //   // tslint:disable-next-line: max-line-length
   //   return this.http.get<{ _id: string, restid: string, orders: Array<string> }>(
-  //     'http://localhost:3000/api/restaurants/cart'
+  //     '/restaurants/cart'
   //   );
   // }
 
   deletePost(cartId: string) {
-    this.http.put('http://localhost:3000/api/restaurants/cart/' + cartId, '')
+    this.http.put(BACKEND_URL + '/restaurants/cart/' + cartId, '')
       .subscribe(() => {
         this.cart.forEach((o) => {
           o.orders = o.orders.filter(s => s._id !== cartId);
@@ -393,9 +397,9 @@ export class RestaurantsService {
       name, phone, address, restid,
       orders, restname
     };
-    this.http.post('http://localhost:3000/api/orders', order).subscribe(res => {
+    this.http.post(BACKEND_URL + '/orders', order).subscribe(res => {
       console.log(res);
-      this.http.delete('http://localhost:3000/api/restaurants/cart')
+      this.http.delete(BACKEND_URL + '/restaurants/cart')
         .subscribe(response => {
           this.cart.pop();
           this.cartUpdated.next([...this.cart]);
@@ -406,7 +410,7 @@ export class RestaurantsService {
 
   getOrders() {
     this.http.get<{ message: string, orders: any }>(
-      'http://localhost:3000/api/orders'
+      BACKEND_URL + '/orders'
     )
       .pipe(map((cartData) => {
         return cartData.orders.map((order) => {

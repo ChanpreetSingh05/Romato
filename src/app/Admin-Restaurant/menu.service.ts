@@ -5,6 +5,10 @@ import { map } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 // import { CartModel } from './cart.model';
 
+import { environment } from '../../environments/environment';
+
+const BACKEND_URL = environment.apiUrl;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -30,7 +34,7 @@ export class MenuService {
       // 5ed6e8e672ae430bf4e55230
       // const Data = { name, cost , restid: '5ed6e8e672ae430bf4e55230'};
       this.http
-        .post('http://localhost:3000/api/menu/brkfast', Data)
+        .post(BACKEND_URL + '/menu/brkfast', Data)
         .subscribe(response => {
           console.log(response);
           this.router.navigate(['/rest-admin/menu']);
@@ -38,7 +42,7 @@ export class MenuService {
     } else if (meal === 'Lunch') {
       // 5ed6e8e672ae430bf4e55230
       this.http
-        .post('http://localhost:3000/api/menu/lunch', Data)
+        .post(BACKEND_URL + '/menu/lunch', Data)
         .subscribe(response => {
           console.log(response);
           this.router.navigate(['menu']);
@@ -46,7 +50,7 @@ export class MenuService {
     } else if (meal === 'Dinner') {
       // 5ed6e8e672ae430bf4e55230
       this.http
-        .post('http://localhost:3000/api/menu/dinner', Data)
+        .post(BACKEND_URL + '/menu/dinner', Data)
         .subscribe(response => {
           console.log(response);
           this.router.navigate(['menu']);
@@ -73,21 +77,21 @@ export class MenuService {
 
     if (meal === 'Breakfast') {
       this.http
-        .put('http://localhost:3000/api/menu/brkfastupdate', Data)
+        .put(BACKEND_URL + '/menu/brkfastupdate', Data)
         .subscribe(response => {
           console.log(response);
           this.router.navigate(['/rest-admin/menu']);
         });
     } else if (meal === 'Lunch') {
       this.http
-        .put('http://localhost:3000/api/menu/lunchupdate', Data)
+        .put(BACKEND_URL + '/menu/lunchupdate', Data)
         .subscribe(response => {
           console.log(response);
           this.router.navigate(['/rest-admin/menu']);
         });
     } else if (meal === 'Dinner') {
       this.http
-        .put('http://localhost:3000/api/menu/dinnerupdate', Data)
+        .put(BACKEND_URL + '/menu/dinnerupdate', Data)
         .subscribe(response => {
           console.log(response);
           this.router.navigate(['/rest-admin/menu']);
@@ -104,7 +108,7 @@ export class MenuService {
         cost: string;
         imagePath: string;
       }>
-        ('http://localhost:3000/api/menu/breakfastdetails/' + id);
+        (BACKEND_URL + '/menu/breakfastdetails/' + id);
     } else if (type === 'lunch') {
       return this.http.get<{
         _id: string;
@@ -112,7 +116,7 @@ export class MenuService {
         cost: string;
         imagePath: string;
       }>
-        ('http://localhost:3000/api/menu/lunchdetails/' + id);
+        (BACKEND_URL + '/menu/lunchdetails/' + id);
     } else if (type === 'dinner') {
       return this.http.get<{
         _id: string;
@@ -120,14 +124,14 @@ export class MenuService {
         cost: string;
         imagePath: string;
       }>
-        ('http://localhost:3000/api/menu/dinnerdetails/' + id);
+        (BACKEND_URL + '/menu/dinnerdetails/' + id);
     }
   }
 
   getOrders() {
     // return [...this.posts];
     this.http.get<{ message: string, orders: any }>(
-      'http://localhost:3000/api/orders/admin'
+      BACKEND_URL + '/orders/admin'
     )
       .pipe(map((OrderData) => {
         return OrderData.orders.map((order) => {
@@ -157,7 +161,7 @@ export class MenuService {
     // tslint:disable-next-line: object-literal-shorthand
     const update = { id: id, status: status };
     this.http
-      .put('http://localhost:3000/api/orders/admin', update)
+      .put(BACKEND_URL + '/orders/admin', update)
       .subscribe(response => {
         console.log(this.orders);
         this.orders.find(item => item.id === update.id).status = update.status;

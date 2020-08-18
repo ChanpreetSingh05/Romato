@@ -6,6 +6,9 @@ import { map } from 'rxjs/operators';
 import { Review } from './review.model';
 import { Router } from '@angular/router';
 
+import { environment } from '../../environments/environment';
+
+const BACKEND_URL = environment.apiUrl;
 @Injectable({
   providedIn: 'root'
 })
@@ -19,7 +22,7 @@ export class ReviewService {
     const queryParams = `?pagesize=${ReviewsPerPage}&page=${currentPage}&postID=${parentID}`;
     this.http
       .get<{ message: string; reviews: any; maxReviews: number }>(
-        'http://localhost:3000/api/reviews' + queryParams
+        BACKEND_URL + '/reviews' + queryParams
       )
       .pipe(
         map(reviewData => {
@@ -58,7 +61,7 @@ export class ReviewService {
       imagePath: string;
       creator: string;
       name: string;
-    }>('http://localhost:3000/api/reviews/' + id);
+    }>(BACKEND_URL + '/reviews/' + id);
   }
 
   addReview(content: string, image: File, postID: string) {
@@ -68,7 +71,7 @@ export class ReviewService {
     reviewData.append('postID', postID);
     this.http
       .post<{ message: string; review: Review }>(
-        'http://localhost:3000/api/reviews',
+        BACKEND_URL + '/reviews',
         reviewData
       )
       .subscribe(responseData => {
@@ -101,7 +104,7 @@ export class ReviewService {
       };
     }
     this.http
-      .put('http://localhost:3000/api/reviews/' + id, reviewData)
+      .put(BACKEND_URL + '/reviews/' + id, reviewData)
       .subscribe(response => {
         console.log(response);
         this.router.navigate(['/']);
@@ -110,6 +113,6 @@ export class ReviewService {
 
   deleteReview(postId: string) {
     return this.http
-      .delete('http://localhost:3000/api/reviews/' + postId);
+      .delete(BACKEND_URL + '/reviews/' + postId);
   }
 }

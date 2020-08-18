@@ -276,10 +276,6 @@ router.get("/cart", checkAuth, (req, res, next) => {
       message: "Posts fetched Successfully",
       cart: documents,
     });
-  }) .catch((err) => {
-    res.status(500).json({
-      message: err,
-    });
   });
 });
 

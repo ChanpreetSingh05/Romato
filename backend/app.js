@@ -14,7 +14,7 @@ const app = express();
 
 mongoose
   .connect(
-    "mongodb+srv://chan:chan1234@cluster0-uqtcp.mongodb.net/Zomato?retryWrites=true&w=majority"
+    "mongodb+srv://chan:" + process.env.MONGO_ATLAS_PW +"@cluster0-uqtcp.mongodb.net/Zomato?retryWrites=true&w=majority"
     ,{useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }
   )
   .then(() => {

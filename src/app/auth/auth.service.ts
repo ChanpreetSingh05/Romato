@@ -6,6 +6,9 @@ import { Subject } from 'rxjs';
 import { AuthData } from './auth-data.model';
 import { RestaurantsService } from '../restaurants/restaurant.service';
 
+import { environment } from '../../environments/environment';
+
+const BACKEND_URL = environment.apiUrl;
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private isAuthenticated = false;
@@ -63,9 +66,9 @@ export class AuthService {
       const authData: AuthData = { email: email, password: password, restid: id, isrest: isrest, isuser: isuser, name: name };
       const menudata = {restid: id, name };
       this.http
-        .post('http://localhost:3000/api/user/signup', authData)
+        .post(BACKEND_URL + '/user/signup', authData)
         .subscribe(response => {
-          this.http.post('http://localhost:3000/api/menu', menudata).subscribe(res => {
+          this.http.post(BACKEND_URL + '/menu', menudata).subscribe(res => {
               this.rest.updateRestAccount(id, true );
           });
         });
@@ -73,7 +76,7 @@ export class AuthService {
       // tslint:disable-next-line: object-literal-shorthand
       const authData: AuthData = { email: email, password: password, restid: null , isrest: isrest, isuser: isuser, name: name };
       this.http
-      .post('http://localhost:3000/api/user/signup', authData)
+      .post(BACKEND_URL + '/user/signup', authData)
       .subscribe(response => {
         console.log(response);
       });
@@ -85,7 +88,7 @@ export class AuthService {
     const authData: any = { email: email, password: password };
     this.http
       .post<{ token: string; expiresIn: number; userId: string; isadmin: boolean ; isrest: boolean; isuser: boolean; restid: string }>(
-        'http://localhost:3000/api/user/login',
+        BACKEND_URL + '/user/login',
         authData
       )
       .subscribe(response => {
