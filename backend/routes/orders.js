@@ -27,7 +27,7 @@ router.post("", checkAuth, (req, res, next) => {
     })
     .catch((err) => {
       res.status(500).json({
-        error: err,
+        message: err,
       });
     });
 });
@@ -38,6 +38,10 @@ router.get("", checkAuth, (req, res, next) => {
       message: "Posts fetched Successfully",
       orders: documents,
     });
+  }) .catch((err) => {
+    res.status(500).json({
+      message: err,
+    });
   });
 });
 
@@ -46,6 +50,10 @@ router.get("/admin", checkAuth, (req, res, next) => {
     res.status(200).json({
       message: "Posts fetched Successfully",
       orders: documents,
+    });
+  }) .catch((err) => {
+    res.status(500).json({
+      message: err,
     });
   });
 });
@@ -61,7 +69,11 @@ router.put("/admin", checkAuth, (req, res, next) => {
         res.status(401).json({ message: "Not Authorized !" });
       }
     }
-  );
+  ) .catch((err) => {
+    res.status(500).json({
+      message: err,
+    });
+  });
 });
 
 module.exports = router;

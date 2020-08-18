@@ -49,6 +49,10 @@ router.post(
         message: "Post added successfully",
         review: createdPost
       });
+    }) .catch((err) => {
+      res.status(500).json({
+        message: err,
+      });
     });
   }
 );
@@ -98,6 +102,10 @@ router.put(
       }else{
         res.status(401).json({ message: "Not Authorized !" });
       }
+    }) .catch((err) => {
+      res.status(500).json({
+        message: err,
+      });
     });
   });
 
@@ -120,6 +128,10 @@ router.get("", (req, res, next) => {
         reviews: fetchedPosts,
         maxReviews: count
       });
+    }) .catch((err) => {
+      res.status(500).json({
+        message: err,
+      });
     });
 });
 
@@ -130,6 +142,10 @@ router.get("/:id", (req, res, next) => {
     } else {
       res.status(404).json({ message: "Post not found!" });
     }
+  }) .catch((err) => {
+    res.status(500).json({
+      message: err,
+    });
   });
 });
 
@@ -141,6 +157,10 @@ router.delete("/:id", checkAuth, (req, res, next) => {
     }else{
       res.status(401).json({ message: "Not Authorized !" });
     }
+  }) .catch((err) => {
+    res.status(500).json({
+      message: err,
+    });
   });
 });
 

@@ -99,6 +99,7 @@ export class RestaurantsService {
     resData.append('additional', this.additional);
     this.http.post('http://localhost:3000/api/restaurants', resData).subscribe(response => {
       console.log(response);
+      this.router.navigate(['/']);
     });
   }
 
@@ -398,6 +399,7 @@ export class RestaurantsService {
         .subscribe(response => {
           this.cart.pop();
           this.cartUpdated.next([...this.cart]);
+          this.router.navigate(['/orders']);
         });
     });
   }

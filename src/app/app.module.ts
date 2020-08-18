@@ -21,7 +21,8 @@ MatPaginatorModule,
   MatSidenavModule,
   MatDividerModule,
   MatListModule,
-  MatSelectModule
+  MatSelectModule,
+  MatDialogModule
 } from '@angular/material';
 import { RestaurantDetailsComponent } from './restaurants/restaurant-details/restaurant-details.component';
 import { ReviewListComponent } from './review/review-list/review-list.component';
@@ -31,6 +32,7 @@ import { HeaderComponent } from './header/header.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { AuthInterceptor } from './auth/auth-interceptor';
+import { ErrorInterceptor } from './error-interceptor';
 import { AddrestaurantComponent } from './restaurants/addrestaurant/addrestaurant.component';
 import { RestaurantMenuComponent } from './restaurants/restaurant-menu/restaurant-menu.component';
 import { CartComponent } from './restaurants/cart/cart.component';
@@ -45,6 +47,7 @@ import { RequestRestaurantComponent } from './Admin/request-restaurant/request-r
 import { RequestDetailRestaurantComponent } from './Admin/request-detail-restaurant/request-detail-restaurant.component';
 import { AssignLoginComponent } from './Admin/assign-login/assign-login.component';
 import { Page404Component } from './page404/page404.component';
+import { ErrorComponent } from './error/error.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +73,8 @@ import { Page404Component } from './page404/page404.component';
     RequestRestaurantComponent,
     RequestDetailRestaurantComponent,
     AssignLoginComponent,
-    Page404Component
+    Page404Component,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,
@@ -91,12 +95,15 @@ import { Page404Component } from './page404/page404.component';
     MatCheckboxModule,
     MatSidenavModule,
     MatDividerModule,
+    MatDialogModule,
     MatListModule,
     MatSelectModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ ErrorComponent]
 })
 export class AppModule { }

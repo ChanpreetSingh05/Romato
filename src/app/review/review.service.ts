@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Review } from './review.model';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class ReviewService {
   private reviews: Review[] = [];
   private reviewsUpdated = new Subject<{ reviews: Review[]; reviewCount: number }>();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   getReviews(ReviewsPerPage: number, currentPage: number, parentID: string) {
     const queryParams = `?pagesize=${ReviewsPerPage}&page=${currentPage}&postID=${parentID}`;
@@ -78,6 +79,7 @@ export class ReviewService {
         });
         console.log(this.reviews);
         console.log(responseData);
+        this.router.navigate(['/']);
       });
   }
 
@@ -102,6 +104,7 @@ export class ReviewService {
       .put('http://localhost:3000/api/reviews/' + id, reviewData)
       .subscribe(response => {
         console.log(response);
+        this.router.navigate(['/']);
       });
   }
 

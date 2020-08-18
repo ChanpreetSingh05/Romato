@@ -43,7 +43,7 @@ router.post("", (req, res, next) => {
     })
     .catch((err) => {
       res.status(500).json({
-        error: err,
+        message: err,
       });
     });
 });
@@ -73,8 +73,12 @@ multer({ storage: storage }).single("image"),
     if (result.nModified > 0) {
       res.status(200).json({ message: "Update successful!" });
     } else {
-      res.status(401).json({ message: "not" });
+      res.status(401).json({ message: "Not Updated" });
     }
+  }).catch((err) => {
+    res.status(500).json({
+      message: err,
+    });
   });
 });
 
@@ -101,8 +105,12 @@ multer({ storage: storage }).single("image"),
     if (result.nModified > 0) {
       res.status(200).json({ message: "Update successful!" });
     } else {
-      res.status(401).json({ message: "not" });
+      res.status(401).json({ message: "Update Failed" });
     }
+  }).catch((err) => {
+    res.status(500).json({
+      message: err,
+    });
   });
 });
 
@@ -131,8 +139,12 @@ router.post(
       if (result.nModified > 0) {
         res.status(200).json({ message: "Update successful!" });
       } else {
-        res.status(401).json({ message: "not" });
+        res.status(401).json({ message: "Update Failed" });
       }
+    }) .catch((err) => {
+      res.status(500).json({
+        message: err,
+      });
     });
   }
 );
@@ -166,8 +178,12 @@ multer({ storage: storage }).single("image"),
     if (result.nModified > 0) {
       res.status(200).json({ message: "Update successful!" });
     } else {
-      res.status(401).json({ message: "not" });
+      res.status(401).json({ message: "Update Failed" });
     }
+  }) .catch((err) => {
+    res.status(500).json({
+      message: err,
+    });
   });
 });
 
@@ -197,8 +213,12 @@ multer({ storage: storage }).single("image"),
     if (result.nModified > 0) {
       res.status(200).json({ message: "Update successful!" });
     } else {
-      res.status(401).json({ message: "not" });
+      res.status(401).json({ message: "Update Failed" });
     }
+  }) .catch((err) => {
+    res.status(500).json({
+      message: err,
+    });
   });
 });
 
@@ -232,8 +252,12 @@ multer({ storage: storage }).single("image"),
     if (result.nModified > 0) {
       res.status(200).json({ message: "Update successful!" });
     } else {
-      res.status(401).json({ message: "not" });
+      res.status(401).json({ message: "Update Failed" });
     }
+  }) .catch((err) => {
+    res.status(500).json({
+      message: err,
+    });
   });
 });
 
@@ -243,6 +267,10 @@ router.get("", checkAuth, (req, res, next) => {
       message: "Posts fetched Successfully",
       menu: documents,
     });
+  }).catch((err) => {
+    res.status(500).json({
+      message: err,
+    });
   });
 });
 
@@ -251,6 +279,10 @@ router.get("/:id", checkAuth, (req, res, next) => {
     res.status(200).json({
       message: "Posts fetched Successfully",
       menu: documents,
+    });
+  }) .catch((err) => {
+    res.status(500).json({
+      message: err,
     });
   });
 });
@@ -270,6 +302,10 @@ router.get("/breakfastdetails/:id", checkAuth, (req, res, next) => {
     } else {
       res.status(404).json({ message: "Restaurant Menu Not found!" });
     }
+  }) .catch((err) => {
+    res.status(500).json({
+      message: err,
+    });
   });
 });
 
@@ -286,6 +322,10 @@ router.get("/lunchdetails/:id", checkAuth, (req, res, next) => {
     } else {
       res.status(404).json({ message: "Restaurant Menu Not found!" });
     }
+  }) .catch((err) => {
+    res.status(500).json({
+      message: err,
+    });
   });
 });
 
@@ -302,6 +342,10 @@ router.get("/dinnerdetails/:id", checkAuth, (req, res, next) => {
     } else {
       res.status(404).json({ message: "Restaurant Menu Not found!" });
     }
+  }) .catch((err) => {
+    res.status(500).json({
+      message: err,
+    });
   });
 });
 
@@ -320,6 +364,10 @@ router.put("/brkfastdelete", checkAuth, (req, res, next) => {
     } else {
       res.status(401).json({ message: "not" });
     }
+  }) .catch((err) => {
+    res.status(500).json({
+      message: err,
+    });
   });
 });
 
@@ -336,6 +384,10 @@ router.put("/lunchdelete", checkAuth, (req, res, next) => {
     } else {
       res.status(401).json({ message: "not" });
     }
+  }) .catch((err) => {
+    res.status(500).json({
+      message: err,
+    });
   });
 });
 
@@ -352,6 +404,10 @@ router.put("/dinnerdelete", checkAuth, (req, res, next) => {
     } else {
       res.status(401).json({ message: "not" });
     }
+  }) .catch((err) => {
+    res.status(500).json({
+      message: err,
+    });
   });
 });
 

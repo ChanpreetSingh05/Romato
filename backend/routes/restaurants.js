@@ -76,7 +76,7 @@ upload.fields([{ name: 'image' }, { name: 'cover' }])
     })
     .catch((err) => {
       res.status(500).json({
-        error: err,
+        message: err,
       });
     });
 });
@@ -86,6 +86,10 @@ router.get("", (req, res, next) => {
     res.status(200).json({
       message: "Posts fetched Successfully",
       restaurant: documents,
+    });
+  }) .catch((err) => {
+    res.status(500).json({
+      message: err,
     });
   });
 });
@@ -97,6 +101,10 @@ router.get("/admin", (req, res, next) => {
       message: "Posts fetched Successfully",
       restaurant: documents,
     });
+  }) .catch((err) => {
+    res.status(500).json({
+      message: err,
+    });
   });
 });
 
@@ -105,6 +113,10 @@ router.get("/admin/login", (req, res, next) => {
     res.status(200).json({
       message: "Posts fetched Successfully",
       restaurant: documents,
+    });
+  }) .catch((err) => {
+    res.status(500).json({
+      message: err,
     });
   });
 });
@@ -116,6 +128,10 @@ router.get("/adminrestdetails", checkAuth, (req, res, next) => {
     } else {
       res.status(404).json({ message: "Restaurant Not found!" });
     }
+  }) .catch((err) => {
+    res.status(500).json({
+      message: err,
+    });
   });
 });
 
@@ -130,7 +146,11 @@ router.put("/admin", checkAuth, (req, res, next) => {
         res.status(401).json({ message: "Not Authorized !" });
       }
     }
-  );
+  ) .catch((err) => {
+    res.status(500).json({
+      message: err,
+    });
+  });
 });
 
 router.put("/admin/account", checkAuth, (req, res, next) => {
@@ -144,7 +164,11 @@ router.put("/admin/account", checkAuth, (req, res, next) => {
         res.status(401).json({ message: "Not Authorized !" });
       }
     }
-  );
+  ) .catch((err) => {
+    res.status(500).json({
+      message: err,
+    });
+  });
 });
 
 //For Refresh Fetching
@@ -155,6 +179,10 @@ router.get("/details/:id", (req, res, next) => {
     } else {
       res.status(404).json({ message: "Restaurant Not found!" });
     }
+  }) .catch((err) => {
+    res.status(500).json({
+      message: err,
+    });
   });
 });
 
@@ -180,7 +208,7 @@ router.post("/cart", checkAuth, (req, res, next) => {
     })
     .catch((err) => {
       res.status(500).json({
-        error: err,
+        message: err,
       });
     });
 });
@@ -206,6 +234,10 @@ router.put("/updatecart", checkAuth, (req, res, next) => {
     } else {
       res.status(401).json({ message: "Not Authorized !" });
     }
+  }) .catch((err) => {
+    res.status(500).json({
+      message: err,
+    });
   });
 });
 
@@ -223,6 +255,10 @@ router.put("/cart/:id", checkAuth, (req, res, next) => {
     } else {
       res.status(401).json({ message: "not" });
     }
+  }) .catch((err) => {
+    res.status(500).json({
+      message: err,
+    });
   });
 
   // .deleteOne({ _id: req.params.id }).then((result) => {
@@ -240,6 +276,10 @@ router.get("/cart", checkAuth, (req, res, next) => {
       message: "Posts fetched Successfully",
       cart: documents,
     });
+  }) .catch((err) => {
+    res.status(500).json({
+      message: err,
+    });
   });
 });
 
@@ -252,6 +292,10 @@ router.delete("/cart", checkAuth, (req, res, next) => {
     }else{
       res.status(401).json({ message: "Not Authorized !" });
     }
+  }) .catch((err) => {
+    res.status(500).json({
+      message: err,
+    });
   });
 });
 
