@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NgForm } from '@angular/forms';
 import { AuthService } from 'src/app/auth/auth.service';
@@ -10,7 +10,7 @@ import { RestaurantModel } from 'src/app/restaurants/restaurant.model';
   templateUrl: './assign-login.component.html',
   styleUrls: ['./assign-login.component.css']
 })
-export class AssignLoginComponent implements OnInit {
+export class AssignLoginComponent implements OnInit, OnDestroy {
   selectedValue: string;
   selected: RestaurantModel;
   boolsel = false;
@@ -37,6 +37,10 @@ export class AssignLoginComponent implements OnInit {
         });
         // this.isLoading = false;
       });
+  }
+
+  ngOnDestroy() {
+    this.restSub.unsubscribe();
   }
 
   Submit(form: NgForm) {
